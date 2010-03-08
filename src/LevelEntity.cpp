@@ -2,7 +2,7 @@
 
 namespace FormFactor {
 
-	const unsigned int NUM_TILES = 500;
+	const unsigned int NUM_TILES = 1;
 
 LevelEntity::LevelEntity(SceneNode *node, std::vector<Reference<Primitive> > &worldPrims) : GameEntity(node)
 {

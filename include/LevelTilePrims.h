@@ -6,3 +6,4 @@
 
 #include "PowerUp.h"
 #include "Ground.h"
+#include "MovingPlatform.h"

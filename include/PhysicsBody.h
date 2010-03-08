@@ -56,11 +56,13 @@ namespace FormFactor {
 		 */
 		Point getPosition() const {return pos;}
 
+		virtual Vector getVelocity() const {return vel;}
+
 		/*
 		 * Any object which wants to handle collision must override,
 		 * this function.
 		 */
-		virtual void handleCollision(Reference<Primitive> &objHit, const Vector &v) {}
+		virtual void handleCollision(Reference<Primitive> &objHit, const Vector &dir) {}
 
 		virtual void clearPhysicsState() {}
 

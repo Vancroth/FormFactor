@@ -35,6 +35,19 @@ public:
 		return sqrt(lengthSquared());
 	}
 
+	// Normalize and return orignial length
+	float normalize() {
+		float len = length();
+		assert(len!=0);
+		float invLen = 1.f/len;
+		x *= invLen; y *= invLen; z *= invLen;
+		return len;
+	}
+
+	float dot(const Vector &other) const {
+		return x*other.x + y*other.y + z*other.z;
+	}
+
 	inline Ogre::Vector3 getOgreVector() const {
 		return Ogre::Vector3(x, y, z);
 	}

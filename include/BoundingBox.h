@@ -9,6 +9,7 @@
 #include <Ogre.h>
 
 #include "Point.h"
+#include "Vector.h"
 
 
 #ifndef INFINITY
@@ -34,6 +35,9 @@ public:
 	BoundingBox getUnion(const Point &pt);
 
 	BoundingBox getUnion(const BoundingBox &other);
+
+	// return box that is this box expanded in the given direction
+	BoundingBox getExpanded(const Vector &v);
 
 	// return true if the boxes intersect
 	bool intersects(const BoundingBox &other) const;

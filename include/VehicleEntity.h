@@ -22,7 +22,7 @@ public:
 	virtual bool intersects(FormFactor::Reference<FormFactor::Primitive> &other, FormFactor::Reference<FormFactor::Primitive> &objHit) const;
 
 	// Override PhysicsBody functions
-	virtual void handleCollision(FormFactor::Reference<FormFactor::Primitive> &objHit, const FormFactor::Vector &v);
+	virtual void handleCollision(FormFactor::Reference<FormFactor::Primitive> &objHit, const FormFactor::Vector &dir);
 	virtual void updateGraphicalPosition(const FormFactor::Vector &amountShifted);
 	virtual void clearPhysicsState();
 

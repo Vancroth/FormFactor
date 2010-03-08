@@ -39,6 +39,10 @@ BoundingBox BoundingBox::getUnion(const BoundingBox &other) {
 	return BoundingBox(Point::minPt(origin, other.origin), Point::maxPt(maxPoint, other.maxPoint));
 }
 
+BoundingBox BoundingBox::getExpanded(const Vector &v) {
+	return BoundingBox(Point::minPt(origin, origin + v), Point::maxPt(maxPoint, maxPoint + v));
+}
+
 bool BoundingBox::intersects(const BoundingBox &other) const {
 
 	// Check x-axis

@@ -16,6 +16,8 @@ LevelTileEntity::LevelTileEntity(SceneNode *node, Reference<LevelEntity> l, unsi
 	level = l;
 
 	// Procedurally build tile and add Primitives to prims
+
+	char *terrain = terrains[rand() % 3];
 		
 	// Create power ups
 	char buf[60]; sprintf(buf, "PowerUp1-%d", id);
@@ -32,9 +34,15 @@ LevelTileEntity::LevelTileEntity(SceneNode *node, Reference<LevelEntity> l, unsi
 
 	memset(buf, 0, 60); sprintf(buf, "Ground-%d", id);
 	SceneNode *groundNode = node->createChildSceneNode(buf, Vector3(0, 0, 0));
-	FormFactor::Ground *ground = new FormFactor::Ground(groundNode, terrains[rand() % 3], TILE_WIDTH, TILE_HEIGHT);
+	FormFactor::Ground *ground = new FormFactor::Ground(groundNode, terrain, TILE_WIDTH, TILE_HEIGHT);
 	ground->start();
 	prims.push_back(ground);
+
+	memset(buf, 0, 60); sprintf(buf, "Platform-%d", id);
+	SceneNode *platformNode = node->createChildSceneNode(buf, Vector3(20, 20, 0));
+	FormFactor::MovingPlatform *platform = new FormFactor::MovingPlatform(platformNode, terrain, Point(0, 0, 30), 2.f, 0, 10, 10) ;
+	platform->start();
+	prims.push_back(platform);
 
 	// Make bounding box encompass all prims
 	for(unsigned int i = 0; i < prims.size(); i++)
