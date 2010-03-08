@@ -13,12 +13,10 @@ int sceneShift = 80;
 //-------------------------------------------------------------------------------------
 FormFactorApplication::FormFactorApplication()
 {
-	FormFactor::PhysicsBody::initPhysics();
 }
 //-------------------------------------------------------------------------------------
 FormFactorApplication::~FormFactorApplication()
 {
-	FormFactor::PhysicsBody::endPhysics();
 
 }
 //-------------------------------------------------------------------------------------
@@ -39,7 +37,7 @@ void FormFactorApplication::createScene()
 
 	// Create the player
 	SceneNode *playerNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("Player", Vector3(0, sceneShift, 0));
-	playerNode->setDirection(Vector3(0, 0, 1));
+	playerNode->setDirection(Vector3(-1, 0, 0));
 	playerNode->showBoundingBox(true);
 	VehicleEntity *vehicle = new VehicleEntity(playerNode);
 	vehicle->start();
@@ -49,7 +47,7 @@ void FormFactorApplication::createScene()
 	cameraNode->attachObject(mCamera);
 
 	// Create the level
-	SceneNode *levelNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("Level", Vector3(-20, sceneShift-25, 0));
+	SceneNode *levelNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("Level", Vector3(0, sceneShift-25, 0));
 	FormFactor::LevelEntity *level = new FormFactor::LevelEntity(levelNode, primitives);
 	level->start();
 	

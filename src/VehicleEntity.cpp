@@ -1,11 +1,10 @@
 #include "VehicleEntity.h"
 
-VehicleEntity::VehicleEntity(SceneNode *node) : FormFactor::PhysicsBody(node, true) {
+VehicleEntity::VehicleEntity(SceneNode *node) : FormFactor::PhysicsBody(node, true, 25) {
 	vehicle = mSceneMgr->createEntity("Vehicle", "scout.mesh");
 	mNode->attachObject(vehicle);
 
-	setMass(25);
-	//this->addForce(FormFactor::Vector(0, 0, -1000));
+	//this->addForce(FormFactor::Vector(10, 0, 0));
 }
 
 VehicleEntity::~VehicleEntity() {
@@ -20,12 +19,12 @@ bool VehicleEntity::frameEvent(const FrameEvent &evt) {
 bool VehicleEntity::keyPressed(const OIS::KeyEvent &evt) {
 	Quaternion quat; Vector3 src;
 	switch(evt.key) {
-		case OIS::KC_LEFT: this->setVelocity(Vector3(-1000, 0, 0)); break;
-		case OIS::KC_RIGHT: this->setVelocity(Vector3(1000, 0, 0)); break;
-		case OIS::KC_UP: this->setVelocity(Vector3(0, 1000, 0)); break;
-		case OIS::KC_DOWN: this->setVelocity(Vector3(0, -1000, 0)); break;
-		case OIS::KC_W: this->setVelocity(Vector3(0, 0, -1000)); break;
-		case OIS::KC_S: this->setVelocity(Vector3(0, 0, 1000)); break;
+		case OIS::KC_LEFT: this->setVelocity(Vector3(0, 0, -10)); break;
+		case OIS::KC_RIGHT: this->setVelocity(Vector3(0, 0, 10)); break;
+		case OIS::KC_UP: this->setVelocity(Vector3(0, 10, 0)); break;
+		case OIS::KC_DOWN: this->setVelocity(Vector3(0, -10, 0)); break;
+		case OIS::KC_W: this->setVelocity(Vector3(10, 0, 0)); break;
+		case OIS::KC_S: this->setVelocity(Vector3(-10, 0, 10)); break;
 		
 		case OIS::KC_A: mNode->yaw(Degree(-90)); break;
 		case OIS::KC_D: mNode->yaw(Degree(90)); break;
@@ -59,10 +58,5 @@ void VehicleEntity::handleCollision(FormFactor::Reference<FormFactor::Primitive>
 void VehicleEntity::updateGraphicalPosition(const FormFactor::Vector &amountShifted) {
 	mNode->translate(amountShifted.getOgreVector());
 }
-
-void VehicleEntity::setMass(float m) {
-	PhysicsBody::setMass(m, BodyType::Box, worldBound());
-}
-
 
 

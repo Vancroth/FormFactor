@@ -24,7 +24,6 @@ public:
 	// Override PhysicsBody functions
 	virtual void handleCollision(FormFactor::Reference<FormFactor::Primitive> &objHit);
 	virtual void updateGraphicalPosition(const FormFactor::Vector &amountShifted);
-	virtual void setMass(float m);
 
 protected:
 	Entity *vehicle;

@@ -65,13 +65,30 @@ public:
 		return *this;
 	}
 
-	Vector operator*(const float a) const {
+	Vector operator*(float a) const {
 		return Vector(x * a, y * a, z * a);
 	}
 
-	Vector& operator*=(const float a) {
+	Vector& operator*=(float a) {
 		x *= a; y *= a; z *= a;
 		return *this;
+	}
+
+	Vector operator/(float a) const {
+		assert(a!=0);
+		float aInv = 1.f/a;
+		return Vector(x * aInv, y * aInv, z * aInv);
+	}
+
+	Vector& operator/=(float a) {
+		assert(a!=0);
+		float aInv = 1.f/a;
+		x *= aInv; y *= aInv; z *= aInv;
+		return *this;
+	}
+
+	Vector operator-() const {
+		return Vector(-x, -y, -z);
 	}
 
 	float operator[](int i) const {
