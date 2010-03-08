@@ -1,0 +1,19 @@
+
+material 1-Defaulta
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.701961 0.858824 0.964706 1
+			diffuse 0.701961 0.858824 0.964706 1
+			specular 0.081 0.081 0.081 10 0
+			cull_hardware none
+			cull_software none
+		}
+
+	}
+
+}
+
+
