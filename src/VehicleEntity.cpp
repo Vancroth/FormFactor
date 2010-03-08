@@ -4,6 +4,7 @@ VehicleEntity::VehicleEntity(SceneNode *node) : FormFactor::PhysicsBody(node, tr
 	vehicle = mSceneMgr->createEntity("Vehicle", "scout.mesh");
 	mNode->attachObject(vehicle);
 
+	onGround = false;
 	//this->addForce(FormFactor::Vector(10, 0, 0));
 }
 
@@ -30,6 +31,9 @@ bool VehicleEntity::keyPressed(const OIS::KeyEvent &evt) {
 		case OIS::KC_D: mNode->yaw(Degree(90)); break;
 		
 	}
+	forces.clear();
+	onGround = false;
+	//this->addForce(FormFactor::Vector(10, 0, 0));
 	return true;
 }
 
@@ -51,8 +55,12 @@ bool VehicleEntity::intersects(FormFactor::Reference<FormFactor::Primitive> &oth
 	}
 }
 
-void VehicleEntity::handleCollision(FormFactor::Reference<FormFactor::Primitive> &objHit) {
+void VehicleEntity::handleCollision(FormFactor::Reference<FormFactor::Primitive> &objHit, const FormFactor::Vector &v) {
 	this->setVelocity(FormFactor::Vector(0, 0, 0));
+	if(!onGround && v.y==-1) {
+		onGround = true;
+		this->addForce(-FormFactor::PhysicsBody::gravity.force);
+	}
 }
 	
 void VehicleEntity::updateGraphicalPosition(const FormFactor::Vector &amountShifted) {

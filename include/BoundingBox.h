@@ -38,8 +38,10 @@ public:
 	// return true if the boxes intersect
 	bool intersects(const BoundingBox &other) const;
 
+	Vector getIntersectDir(const BoundingBox &other) const;
+
 	void shift(const Vector &v) {
-		orgin += v;
+		origin += v;
 		maxPoint += v;
 	}
 
@@ -49,35 +51,35 @@ public:
 
 	void getChildBoxes(int axis, float cut, BoundingBox &childBelow, BoundingBox &childAbove) const;
 
-	inline Point getOrgin() const {return orgin;}
+	inline Point getorigin() const {return origin;}
 	inline Point getMaxPoint() const {return maxPoint;}
 
-	inline float calcVolume() const {return (maxPoint.x-orgin.x)*(maxPoint.y-orgin.y)*(maxPoint.z-orgin.z);}
+	inline float calcVolume() const {return (maxPoint.x-origin.x)*(maxPoint.y-origin.y)*(maxPoint.z-origin.z);}
 
 	inline float calcSurfaceArea() const {
-		float dx = (maxPoint.x-orgin.x);
-		float dy = (maxPoint.y-orgin.y);
-		float dz = (maxPoint.z-orgin.z);
+		float dx = (maxPoint.x-origin.x);
+		float dy = (maxPoint.y-origin.y);
+		float dz = (maxPoint.z-origin.z);
 		return 2*(dx*dy + dx*dz + dy*dz);
 	}
 
 	inline int getLongestAxis()const  {
-		float dx = (maxPoint.x-orgin.x);
-		float dy = (maxPoint.y-orgin.y);
-		float dz = (maxPoint.z-orgin.z);
+		float dx = (maxPoint.x-origin.x);
+		float dy = (maxPoint.y-origin.y);
+		float dz = (maxPoint.z-origin.z);
 		return (dx > dy && dx > dz ? 0 : (dy > dz ? 1 : 2));
 	}
 
 	inline int getShortestAxis() const {
-		float dx = (maxPoint.x-orgin.x);
-		float dy = (maxPoint.y-orgin.y);
-		float dz = (maxPoint.z-orgin.z);
+		float dx = (maxPoint.x-origin.x);
+		float dy = (maxPoint.y-origin.y);
+		float dz = (maxPoint.z-origin.z);
 		return (dx < dy && dx < dz ? 0 : (dy < dz ? 1 : 2));
 	}
 
 private:
 
-	Point orgin, maxPoint;
+	Point origin, maxPoint;
 
 };
 

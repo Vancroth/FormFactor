@@ -60,7 +60,7 @@ namespace FormFactor {
 		 * Any object which wants to handle collision must override,
 		 * this function.
 		 */
-		virtual void handleCollision(Reference<Primitive> &objHit) {}
+		virtual void handleCollision(Reference<Primitive> &objHit, const Vector &v) {}
 
 		/*
 		 * All physical bodies must implement a method
@@ -80,6 +80,7 @@ namespace FormFactor {
 		static void simulatePhysics(int timeElapse);
 
 
+		static const Force gravity;
 	protected:
 		float mass, massInv;
 		Point pos;
@@ -90,8 +91,6 @@ namespace FormFactor {
 		std::vector<Force> forces;
 
 	private:
-		static Force gravity;
-
 		static std::vector<Reference<PhysicsBody> > bodies;
 		static Reference<KdTree> tree;
 

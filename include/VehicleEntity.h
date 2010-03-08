@@ -22,10 +22,11 @@ public:
 	virtual bool intersects(FormFactor::Reference<FormFactor::Primitive> &other, FormFactor::Reference<FormFactor::Primitive> &objHit) const;
 
 	// Override PhysicsBody functions
-	virtual void handleCollision(FormFactor::Reference<FormFactor::Primitive> &objHit);
+	virtual void handleCollision(FormFactor::Reference<FormFactor::Primitive> &objHit, const FormFactor::Vector &v);
 	virtual void updateGraphicalPosition(const FormFactor::Vector &amountShifted);
 
 protected:
 	Entity *vehicle;
 	float moveSpeed;
+	bool onGround;
 };

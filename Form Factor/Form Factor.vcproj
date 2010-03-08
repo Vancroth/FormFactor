@@ -277,6 +277,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\include\MovingPlatform.h"
+				>
+			</File>
+			<File
 				RelativePath="..\include\OgreApplication.h"
 				>
 			</File>

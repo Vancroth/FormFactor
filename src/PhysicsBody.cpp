@@ -2,7 +2,7 @@
 
 namespace FormFactor {
 
-	Force PhysicsBody::gravity = Force(Vector(0, -9.8f, 0));
+	const Force PhysicsBody::gravity = Force(Vector(0, -9.8f, 0));
 	std::vector<Reference<PhysicsBody> > PhysicsBody::bodies;
 	Reference<KdTree> PhysicsBody::tree;
 
@@ -69,8 +69,10 @@ namespace FormFactor {
 
 			Reference<Primitive> objHit;
 			Reference<Primitive> temp = bodies[i].getPtr();
-			if(tree->intersects(temp, objHit))
-				bodies[i]->handleCollision(objHit);
+			if(tree->intersects(temp, objHit)) {
+				Vector dir = bodies[i]->worldBound().getIntersectDir(objHit->worldBound());
+				bodies[i]->handleCollision(objHit, dir);
+			}
 		}
 
 	}
