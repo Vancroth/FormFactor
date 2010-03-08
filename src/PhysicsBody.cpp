@@ -65,6 +65,7 @@ namespace FormFactor {
 
 		// Check for/Handle collisions
 		for(unsigned int i = 0; i < bodies.size(); i++) {
+			bodies[i]->clearPhysicsState();
 			if(!bodies[i]->canCollide) continue;
 
 			Reference<Primitive> objHit;

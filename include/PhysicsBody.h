@@ -62,6 +62,8 @@ namespace FormFactor {
 		 */
 		virtual void handleCollision(Reference<Primitive> &objHit, const Vector &v) {}
 
+		virtual void clearPhysicsState() {}
+
 		/*
 		 * All physical bodies must implement a method
 		 * for updating their graphical represenation

@@ -28,6 +28,10 @@ public:
 		x = _x; y = _y; z = _z;
 	}
 
+	inline Ogre::Vector3 getOgrePoint() const {
+		return Ogre::Vector3(x, y, z);
+	}
+
 	inline float distanceSquared(const Point &other) {
 		return (x - other.x)*(x - other.x) + (y - other.y)*(y - other.y) + (z - other.z)*(z - other.z);
 	}

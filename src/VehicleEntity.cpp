@@ -22,7 +22,7 @@ bool VehicleEntity::keyPressed(const OIS::KeyEvent &evt) {
 	switch(evt.key) {
 		case OIS::KC_LEFT: this->setVelocity(Vector3(0, 0, -10)); break;
 		case OIS::KC_RIGHT: this->setVelocity(Vector3(0, 0, 10)); break;
-		case OIS::KC_UP: this->setVelocity(Vector3(0, 10, 0)); break;
+		case OIS::KC_UP: if(onGround)this->setVelocity(Vector3(0, 10, 0)); break;
 		case OIS::KC_DOWN: this->setVelocity(Vector3(0, -10, 0)); break;
 		case OIS::KC_W: this->setVelocity(Vector3(10, 0, 0)); break;
 		case OIS::KC_S: this->setVelocity(Vector3(-10, 0, 10)); break;
@@ -31,8 +31,7 @@ bool VehicleEntity::keyPressed(const OIS::KeyEvent &evt) {
 		case OIS::KC_D: mNode->yaw(Degree(90)); break;
 		
 	}
-	forces.clear();
-	onGround = false;
+
 	//this->addForce(FormFactor::Vector(10, 0, 0));
 	return true;
 }
@@ -61,6 +60,11 @@ void VehicleEntity::handleCollision(FormFactor::Reference<FormFactor::Primitive>
 		onGround = true;
 		this->addForce(-FormFactor::PhysicsBody::gravity.force);
 	}
+}
+
+void VehicleEntity::clearPhysicsState() {
+	forces.clear();
+	onGround = false;
 }
 	
 void VehicleEntity::updateGraphicalPosition(const FormFactor::Vector &amountShifted) {
