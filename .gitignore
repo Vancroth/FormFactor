@@ -1,5 +1,9 @@
 bin/*
 Debug/*
+
 *.suo
 *.ncb
 *.obj
+*.vcproj
+
+.DS_STORE

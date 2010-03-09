@@ -1,38 +1,38 @@
-14:08:14: Creating resource group General
-14:08:14: Creating resource group Internal
-14:08:14: Creating resource group Autodetect
-14:08:14: SceneManagerFactory for type 'DefaultSceneManager' registered.
-14:08:14: Registering ResourceManager for type Material
-14:08:14: Registering ResourceManager for type Mesh
-14:08:14: Registering ResourceManager for type Skeleton
-14:08:14: MovableObjectFactory for type 'ParticleSystem' registered.
-14:08:14: OverlayElementFactory for type Panel registered.
-14:08:14: OverlayElementFactory for type BorderPanel registered.
-14:08:14: OverlayElementFactory for type TextArea registered.
-14:08:14: Registering ResourceManager for type Font
-14:08:14: ArchiveFactory for archive type FileSystem registered.
-14:08:14: ArchiveFactory for archive type Zip registered.
-14:08:14: FreeImage version: 3.13.1
-14:08:14: This program uses FreeImage, a free, open source image library supporting all common bitmap formats. See http://freeimage.sourceforge.net for details
-14:08:14: Supported formats: bmp,ico,jpg,jif,jpeg,jpe,jng,koa,iff,lbm,mng,pbm,pbm,pcd,pcx,pgm,pgm,png,ppm,ppm,ras,tga,targa,tif,tiff,wap,wbmp,wbm,psd,cut,xbm,xpm,gif,hdr,g3,sgi,exr,j2k,j2c,jp2,pfm,pct,pict,pic,bay,bmq,cr2,crw,cs1,dc2,dcr,dng,erf,fff,hdr,k25,kdc,mdc,mos,mrw,nef,orf,pef,pxn,raf,raw,rdc,sr2,srf,arw,3fr,cine,ia,kc2,mef,nrw,qtk,rw2,sti,drf,dsc,ptx,cap,iiq,rwz
-14:08:14: DDS codec registering
-14:08:14: Registering ResourceManager for type HighLevelGpuProgram
-14:08:14: Registering ResourceManager for type Compositor
-14:08:14: MovableObjectFactory for type 'Entity' registered.
-14:08:14: MovableObjectFactory for type 'Light' registered.
-14:08:14: MovableObjectFactory for type 'BillboardSet' registered.
-14:08:14: MovableObjectFactory for type 'ManualObject' registered.
-14:08:14: MovableObjectFactory for type 'BillboardChain' registered.
-14:08:14: MovableObjectFactory for type 'RibbonTrail' registered.
-14:08:14: OGRE EXCEPTION(6:FileNotFoundException): 'plugins.cfg' file not found! in ConfigFile::load at ..\..\OgreMain\src\OgreConfigFile.cpp (line 83)
-14:08:14: plugins.cfg not found, automatic plugin loading disabled.
-14:08:14: *-*-* OGRE Initialising
-14:08:14: *-*-* Version 1.7.0RC1 (Cthugha)
-14:08:14: OGRE EXCEPTION(6:FileNotFoundException): 'resources.cfg' file not found! in ConfigFile::load at ..\..\OgreMain\src\OgreConfigFile.cpp (line 83)
-14:08:17: *-*-* OGRE Shutdown
-14:08:17: Unregistering ResourceManager for type Compositor
-14:08:17: Unregistering ResourceManager for type Font
-14:08:17: Unregistering ResourceManager for type Skeleton
-14:08:17: Unregistering ResourceManager for type Mesh
-14:08:17: Unregistering ResourceManager for type HighLevelGpuProgram
-14:08:17: Unregistering ResourceManager for type Material
+14:19:06: Creating resource group General
+14:19:06: Creating resource group Internal
+14:19:06: Creating resource group Autodetect
+14:19:06: SceneManagerFactory for type 'DefaultSceneManager' registered.
+14:19:06: Registering ResourceManager for type Material
+14:19:06: Registering ResourceManager for type Mesh
+14:19:06: Registering ResourceManager for type Skeleton
+14:19:06: MovableObjectFactory for type 'ParticleSystem' registered.
+14:19:06: OverlayElementFactory for type Panel registered.
+14:19:06: OverlayElementFactory for type BorderPanel registered.
+14:19:06: OverlayElementFactory for type TextArea registered.
+14:19:06: Registering ResourceManager for type Font
+14:19:06: ArchiveFactory for archive type FileSystem registered.
+14:19:06: ArchiveFactory for archive type Zip registered.
+14:19:06: FreeImage version: 3.13.1
+14:19:06: This program uses FreeImage, a free, open source image library supporting all common bitmap formats. See http://freeimage.sourceforge.net for details
+14:19:06: Supported formats: bmp,ico,jpg,jif,jpeg,jpe,jng,koa,iff,lbm,mng,pbm,pbm,pcd,pcx,pgm,pgm,png,ppm,ppm,ras,tga,targa,tif,tiff,wap,wbmp,wbm,psd,cut,xbm,xpm,gif,hdr,g3,sgi,exr,j2k,j2c,jp2,pfm,pct,pict,pic,bay,bmq,cr2,crw,cs1,dc2,dcr,dng,erf,fff,hdr,k25,kdc,mdc,mos,mrw,nef,orf,pef,pxn,raf,raw,rdc,sr2,srf,arw,3fr,cine,ia,kc2,mef,nrw,qtk,rw2,sti,drf,dsc,ptx,cap,iiq,rwz
+14:19:06: DDS codec registering
+14:19:06: Registering ResourceManager for type HighLevelGpuProgram
+14:19:06: Registering ResourceManager for type Compositor
+14:19:06: MovableObjectFactory for type 'Entity' registered.
+14:19:06: MovableObjectFactory for type 'Light' registered.
+14:19:06: MovableObjectFactory for type 'BillboardSet' registered.
+14:19:06: MovableObjectFactory for type 'ManualObject' registered.
+14:19:06: MovableObjectFactory for type 'BillboardChain' registered.
+14:19:06: MovableObjectFactory for type 'RibbonTrail' registered.
+14:19:06: OGRE EXCEPTION(6:FileNotFoundException): 'plugins.cfg' file not found! in ConfigFile::load at ..\..\OgreMain\src\OgreConfigFile.cpp (line 83)
+14:19:06: plugins.cfg not found, automatic plugin loading disabled.
+14:19:06: *-*-* OGRE Initialising
+14:19:06: *-*-* Version 1.7.0RC1 (Cthugha)
+14:19:06: OGRE EXCEPTION(6:FileNotFoundException): 'resources.cfg' file not found! in ConfigFile::load at ..\..\OgreMain\src\OgreConfigFile.cpp (line 83)
+14:19:07: *-*-* OGRE Shutdown
+14:19:07: Unregistering ResourceManager for type Compositor
+14:19:07: Unregistering ResourceManager for type Font
+14:19:07: Unregistering ResourceManager for type Skeleton
+14:19:07: Unregistering ResourceManager for type Mesh
+14:19:07: Unregistering ResourceManager for type HighLevelGpuProgram
+14:19:07: Unregistering ResourceManager for type Material
