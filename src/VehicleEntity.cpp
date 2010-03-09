@@ -1,13 +1,15 @@
 #include "VehicleEntity.h"
 
-const int movementSpeed = 5;
+const int VehicleEntity::movementUpSpeed = 5;
+const int VehicleEntity::movementSpeed = 10;
+const FormFactor::Vector VehicleEntity::thrust = FormFactor::Vector(0, 0, -40);
 
 VehicleEntity::VehicleEntity(SceneNode *node) : FormFactor::PhysicsBody(node, true, 25) {
 	vehicle = mSceneMgr->createEntity("Vehicle", "scout.mesh");
 	mNode->attachObject(vehicle);
 
 	onGround = false;
-	//this->addForce(FormFactor::Vector(10, 0, 0));
+	this->addForce(thrust);
 }
 
 VehicleEntity::~VehicleEntity() {
@@ -22,19 +24,18 @@ bool VehicleEntity::frameEvent(const FrameEvent &evt) {
 bool VehicleEntity::keyPressed(const OIS::KeyEvent &evt) {
 	Quaternion quat; Vector3 src;
 	switch(evt.key) {
-		case OIS::KC_LEFT: this->setVelocity(Vector3(0, 0, -movementSpeed)); break;
-		case OIS::KC_RIGHT: this->setVelocity(Vector3(0, 0, movementSpeed)); break;
-		case OIS::KC_UP: if(true)this->setVelocity(Vector3(0, movementSpeed, 0)); break;
-		case OIS::KC_DOWN: this->setVelocity(Vector3(0, -movementSpeed, 0)); break;
-		case OIS::KC_W: this->setVelocity(Vector3(movementSpeed, 0, 0)); break;
-		case OIS::KC_S: this->setVelocity(Vector3(-movementSpeed, 0, 0)); break;
+		case OIS::KC_LEFT: this->setVelocity(Vector3(-movementSpeed, 0, 0)); break;
+		case OIS::KC_RIGHT: this->setVelocity(Vector3(movementSpeed, 0, 0)); break;
+		case OIS::KC_UP: if(true)this->setVelocity(Vector3(0, movementUpSpeed, 0)); break;
+		case OIS::KC_DOWN: this->setVelocity(Vector3(0, -movementUpSpeed, 0)); break;
+		case OIS::KC_W: this->setVelocity(Vector3(0, 0, -movementSpeed)); break;
+		case OIS::KC_S: this->setVelocity(Vector3(0, 0, movementSpeed)); break;
 		
 		case OIS::KC_A: mNode->yaw(Degree(-90)); break;
 		case OIS::KC_D: mNode->yaw(Degree(90)); break;
 		
 	}
 
-	//this->addForce(FormFactor::Vector(10, 0, 0));
 	return true;
 }
 
@@ -67,6 +68,7 @@ void VehicleEntity::handleCollision(FormFactor::Reference<FormFactor::Primitive>
 
 void VehicleEntity::clearPhysicsState() {
 	forces.clear();
+	this->addForce(thrust);
 	onGround = false;
 }
 	

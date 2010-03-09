@@ -2,13 +2,14 @@
 
 namespace FormFactor {
 unsigned int MovingPlatform::numMovingPlatforms = 0;
+const Ogre::Vector3 MovingPlatform::upVector[] = {Vector3::UNIT_Z, Vector3::UNIT_Z, Vector3::UNIT_Y, Vector3::UNIT_Z, Vector3::UNIT_Z, Vector3::UNIT_Y};
+const Ogre::Vector3 MovingPlatform::planeDir[] = {Vector3::UNIT_X, Vector3::UNIT_Y, Vector3::UNIT_Z, -Vector3::UNIT_X, -Vector3::UNIT_Y, -Vector3::UNIT_Z};
 
 MovingPlatform::MovingPlatform(Ogre::SceneNode *node, char *matName, const Point  &dest, float speed, int dir,
 							   unsigned int platformWidth, unsigned int platformHeight) : Primitive(node) {
 	// create a mesh for our MovingPlatform
-	Ogre::Vector3 dirVec = (dir==0 ? Vector3::UNIT_X : (dir==1 ? Vector3::UNIT_Y : Vector3::UNIT_Z));
 	MeshManager::getSingleton().createPlane("MovingPlatform", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-		Plane(dirVec, 0), platformWidth, platformHeight, 5, 5, true, 1, 6, 6, Vector3::UNIT_Z);
+		Plane(planeDir[dir], 0), platformWidth, platformHeight, 5, 5, true, 1, 6, 6, upVector[dir]);
 		
 	// create a MovingPlatform entity from our mesh and attach it to the origin
 	char buf[60]; sprintf(buf, "MovingPlatform%d", numMovingPlatforms++);
@@ -67,7 +68,7 @@ bool MovingPlatform::intersects(FormFactor::Reference<FormFactor::Primitive> &ot
 	}
 }
 
-Vector MovingPlatform::handleVehicleCollision(const Vector &vel, float mass, const Vector &dir) {
+/*Vector MovingPlatform::handleVehicleCollision(const Vector &vel, float mass, const Vector &dir) {
 	Vector v = direction * movementSpeed; 
 	if(dir.y == -1) { // on top of platform
 		return v;
@@ -78,7 +79,7 @@ Vector MovingPlatform::handleVehicleCollision(const Vector &vel, float mass, con
 		Vector velNew = Vector(vel.x - dir.x * abs(vel.x), vel.y - dir.y * abs(vel.y), vel.z - dir.z * abs(vel.z));
 		return velNew + v * d  * (-vDotDir + .01);
 	}
-}
+}*/
 
 } // end FormFactor
 

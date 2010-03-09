@@ -38,8 +38,7 @@ public:
 	// Normalize and return orignial length
 	float normalize() {
 		float len = length();
-		assert(len!=0);
-		float invLen = 1.f/len;
+		float invLen = (len!=0 ? 1.f/len : 0);
 		x *= invLen; y *= invLen; z *= invLen;
 		return len;
 	}

@@ -12,6 +12,8 @@ class LevelEntity;
 class LevelTileEntity : public Primitive {
 
 public:
+	enum PlaneDirection { posX, posY, posZ, negX, negY, negZ};
+
 	LevelTileEntity(SceneNode *node, Reference<LevelEntity> l, unsigned int tileID);
 	~LevelTileEntity(void);
 	virtual bool frameEvent(const FrameEvent &evt);
@@ -42,6 +44,8 @@ protected:
 	BoundingBox bounds;
 
 private:
+	void makeRoom(SceneNode *node, std::vector<Reference<Primitive> > &prims, char* terrain);
+
 	mutable bool firstIntersect;
 	unsigned int id;
 };

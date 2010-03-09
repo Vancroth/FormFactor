@@ -30,7 +30,6 @@ public:
 	virtual bool canIntersect() const {return true;} 
 	virtual bool intersects(Reference<Primitive> &other, Reference<Primitive> &objHit) const;
 	virtual Vector getVelocity() const {return direction * movementSpeed;}
-	virtual Vector handleVehicleCollision(const Vector &vel, float mass, const Vector &dir);
 
 
 protected:
@@ -43,6 +42,10 @@ protected:
 private:
 	static unsigned int numMovingPlatforms;
 	BoundingBox movingBounds;
+
+	static const Ogre::Vector3 upVector[];
+	static const Ogre::Vector3 planeDir[];
+
 };
 
 } // end FormFactor

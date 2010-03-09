@@ -2,15 +2,18 @@
 
 namespace FormFactor {
 unsigned int Ground::numGrounds = 0;
+const Ogre::Vector3 Ground::upVector[] = {Vector3::UNIT_Z, Vector3::UNIT_Z, Vector3::UNIT_Y, Vector3::UNIT_Z, Vector3::UNIT_Z, Vector3::UNIT_Y};
+const Ogre::Vector3 Ground::planeDir[] = {Vector3::UNIT_X, Vector3::UNIT_Y, Vector3::UNIT_Z, -Vector3::UNIT_X, -Vector3::UNIT_Y, -Vector3::UNIT_Z};
 
-Ground::Ground(Ogre::SceneNode *node, char *matName, unsigned int tileWidth, unsigned int tileHeight) : Primitive(node) {
+Ground::Ground(Ogre::SceneNode *node, char *matName, int dir, unsigned int tileWidth, unsigned int tileHeight) : Primitive(node) {
 	// create a mesh for our ground
-	MeshManager::getSingleton().createPlane("ground", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-		Plane(Vector3::UNIT_Y, 0), tileWidth, tileHeight, 20, 20, true, 1, 6, 6, Vector3::UNIT_Z);
+	char buf[60]; sprintf(buf, "ground%d", numGrounds++);
+	MeshManager::getSingleton().createPlane(buf, ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+		Plane(planeDir[dir], 0), tileWidth, tileHeight, 20, 20, true, 1, 6, 6, upVector[dir]);
 		
 	// create a ground entity from our mesh and attach it to the origin
-	char buf[60]; sprintf(buf, "Ground%d", numGrounds++);
-	ground = mSceneMgr->createEntity(buf, "ground");
+	char buf2[60]; sprintf(buf2, "Ground%d", numGrounds++);
+	ground = mSceneMgr->createEntity(buf2, buf);
 	ground->setMaterialName(matName);
 	ground->setCastShadows(false);
 	node->attachObject(ground);

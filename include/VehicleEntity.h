@@ -30,4 +30,8 @@ protected:
 	Entity *vehicle;
 	float moveSpeed;
 	bool onGround;
+
+	static const int movementUpSpeed;
+	static const int movementSpeed;
+	static const FormFactor::Vector VehicleEntity::thrust;
 };

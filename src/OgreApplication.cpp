@@ -46,7 +46,6 @@ void OgreApplication::createCamera()
 	mCamera->lookAt(Vector3(0,0,50));
 	mCamera->setNearClipDistance(5);
 	mCamera->setFarClipDistance(2000);
-
 }
 //-------------------------------------------------------------------------------------
 void OgreApplication::createFrameListener()

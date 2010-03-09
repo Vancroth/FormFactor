@@ -37,7 +37,7 @@ void FormFactorApplication::createScene()
 
 	// Create the player
 	SceneNode *playerNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("Player", Vector3(0, sceneShift, 0));
-	playerNode->setDirection(Vector3(-1, 0, 0));
+	playerNode->setDirection(Vector3(0, 0, 1));
 	playerNode->showBoundingBox(true);
 	VehicleEntity *vehicle = new VehicleEntity(playerNode);
 	vehicle->start();
