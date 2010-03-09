@@ -7,7 +7,7 @@ namespace FormFactor {
 	const unsigned int LevelTileEntity::TILE_WIDTH =  200;
 	const unsigned int LevelTileEntity::TILE_HEIGHT = 200;
 
-	char* terrains[] = {"Examples/GrassFloor", "Examples/BeachStones", "Examples/BumpyMetal"};
+	char* terrains[] = {"Examples/GrassFloor", "Examples/BeachStones", "LevelTiles/Lava"};
 
 LevelTileEntity::LevelTileEntity(SceneNode *node, Reference<LevelEntity> l, unsigned int tileID) : Primitive(node)
 {
@@ -36,7 +36,7 @@ LevelTileEntity::LevelTileEntity(SceneNode *node, Reference<LevelEntity> l, unsi
 
 	memset(buf, 0, 60); sprintf(buf, "Platform-%d", id);
 	SceneNode *platformNode = node->createChildSceneNode(buf, Vector3(20, 20, 0));
-	FormFactor::MovingPlatform *platform = new FormFactor::MovingPlatform(platformNode, terrain, Point(0, 0, 30), 2.f, PlaneDirection::negZ, 10, 10);
+	MovingPlatform *platform = new MovingPlatform(platformNode, terrain, Point(0, 0, 30), 2.f, PlaneDirection::negZ, 10, 10);
 	platform->start();
 	prims.push_back(platform);
 

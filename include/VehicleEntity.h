@@ -1,5 +1,4 @@
 #pragma once
-#include <ode/ode.h>
 #include <Ogre.h>
 #include "GameEntity.h"
 #include "PhysicsBody.h"
@@ -15,6 +14,12 @@ public:
 
 	virtual bool frameEvent(const FrameEvent &evt);
 	virtual bool keyPressed(const OIS::KeyEvent &evt);
+	bool mouseMoved(const OIS::MouseEvent &evt);
+	bool mousePressed(const OIS::MouseEvent &evt, OIS::MouseButtonID id);
+
+	// Vehicle functions
+	bool primaryAbility();
+	bool secondaryAbility();
 
 	// Override Primitve functions
 	virtual FormFactor::BoundingBox worldBound() const;
@@ -31,7 +36,11 @@ protected:
 	float moveSpeed;
 	bool onGround;
 
-	static const int movementUpSpeed;
-	static const int movementSpeed;
+	float primaryCooldown;
+	float secondaryCooldown;
+
+	float curPrimaryCooldown;
+	float curSecondaryCooldown;
+
 	static const FormFactor::Vector VehicleEntity::thrust;
 };

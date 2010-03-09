@@ -38,6 +38,9 @@ namespace FormFactor {
 		void setMass(float m);
 		void setPosition(const Point &p);
 		void setVelocity(const Vector &v);
+		void setVelocityX(const float x);
+		void setVelocityY(const float y);
+		void setVelocityZ(const float z);
 
 		/* 
 		 * Add a force.

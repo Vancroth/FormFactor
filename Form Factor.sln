@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual C++ Express 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Form Factor", "Form Factor\Form Factor.vcproj", "{394B5FB9-7D13-4D3F-A73F-4122B7BE94BB}"
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Form Factor", "Form Factor.vcproj", "{394B5FB9-7D13-4D3F-A73F-4122B7BE94BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

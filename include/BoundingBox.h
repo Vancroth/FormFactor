@@ -1,16 +1,11 @@
 /*
  * Implementation of an axis aligned bounding box.
  */
-#ifndef _BOUNDINGBOX_H_
-#define _BOUNDINGBOX_H_
-
+#pragma once
 #include <float.h>
-
 #include <Ogre.h>
-
 #include "Point.h"
 #include "Vector.h"
-
 
 #ifndef INFINITY
 #define INFINITY FLT_MAX
@@ -88,5 +83,3 @@ private:
 };
 
 } // end FormFactor
-
-#endif // _BOUNDINGBOX_H_
