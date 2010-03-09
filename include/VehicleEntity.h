@@ -6,20 +6,27 @@
 
 using namespace Ogre;
 
+
+
 class VehicleEntity : public FormFactor::PhysicsBody
 {
 public: 
+	enum VehicleMode {
+		NONE, GLIDER, TANK
+	};
+
 	VehicleEntity(SceneNode *node); 
 	virtual ~VehicleEntity(); 
 
 	virtual bool frameEvent(const FrameEvent &evt);
 	virtual bool keyPressed(const OIS::KeyEvent &evt);
-	bool mouseMoved(const OIS::MouseEvent &evt);
-	bool mousePressed(const OIS::MouseEvent &evt, OIS::MouseButtonID id);
+	virtual bool mouseMoved(const OIS::MouseEvent &evt);
+	virtual bool mousePressed(const OIS::MouseEvent &evt, OIS::MouseButtonID id);
 
 	// Vehicle functions
-	bool primaryAbility();
-	bool secondaryAbility();
+	virtual bool transform(VehicleMode mode);
+	virtual bool primaryAbility();
+	virtual bool secondaryAbility();
 
 	// Override Primitve functions
 	virtual FormFactor::BoundingBox worldBound() const;
@@ -32,7 +39,10 @@ public:
 	virtual void clearPhysicsState();
 
 protected:
-	Entity *vehicle;
+	Entity *gliderVehicle;
+	Entity *tankVehicle;
+	Entity *curVehicle;
+
 	float moveSpeed;
 	bool onGround;
 
@@ -41,6 +51,10 @@ protected:
 
 	float curPrimaryCooldown;
 	float curSecondaryCooldown;
+
+	float curRoll;
+
+	VehicleMode curMode;
 
 	static const FormFactor::Vector VehicleEntity::thrust;
 };
