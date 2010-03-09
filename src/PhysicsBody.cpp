@@ -13,6 +13,7 @@ namespace FormFactor {
 		vel = v;
 
 		enableGravity(true);
+		inactive = false;
 
 		setPosition(getPosFromSceneNode(node));
 		
@@ -57,6 +58,7 @@ namespace FormFactor {
 		float timeElapse = .005 * timeElapseMS;
 
 		for(unsigned int i = 0; i < bodies.size(); i++) {
+			if(bodies[i]->inactive) continue;
 			// Add forces
 			Vector totalForce = gravity.force * bodies[i]->gravityOn;
 			for(unsigned int j = 0; j < bodies[i]->forces.size(); j++)
@@ -78,7 +80,7 @@ namespace FormFactor {
 		// Check for/Handle collisions
 		for(unsigned int i = 0; i < bodies.size(); i++) {
 			bodies[i]->clearPhysicsState();
-			if(!bodies[i]->canCollide) continue;
+			if(!bodies[i]->canCollide || bodies[i]->inactive) continue;
 
 			Reference<Primitive> objHit;
 			Reference<Primitive> temp = bodies[i].getPtr();

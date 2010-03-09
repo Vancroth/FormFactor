@@ -32,7 +32,7 @@ namespace FormFactor {
 	public:
 
 		PhysicsBody();
-		PhysicsBody(Ogre::SceneNode *node, bool collides, float m, const Vector &v  = Vector(0.f, 0.f, 0.f));
+		PhysicsBody(Ogre::SceneNode *node, bool collides = true, float m = 0, const Vector &v  = Vector(0.f, 0.f, 0.f));
 
 
 		void setMass(float m);
@@ -50,7 +50,7 @@ namespace FormFactor {
 		 */
 		void addForce(const Vector &force);
 		void addForce(const Vector &force, const Point &p);
-		void clearForces() {forces.clear();}
+		inline void clearForces() {forces.clear();}
 
 		void enableGravity(bool gOn) {gravityOn = (gOn ? 1 : 0);}
 		
@@ -92,8 +92,9 @@ namespace FormFactor {
 		float mass, massInv;
 		Point pos;
 		Vector vel;
-		bool canCollide;
 		int gravityOn;
+		bool canCollide;
+		bool inactive;
 
 		std::vector<Force> forces;
 

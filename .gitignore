@@ -1,4 +1,5 @@
 bin/*
-
+Debug/*
 *.suo
 *.ncb
+*.obj
