@@ -6,4 +6,6 @@ Debug/*
 *.obj
 *.vcproj
 
-.DS_STORE
+.DS_Store
+
+*.user

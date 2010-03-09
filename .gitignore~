@@ -1,8 +1,0 @@
-bin/*
-Debug/*
-
-*.suo
-*.ncb
-*.obj
-
-.DS_STORE
