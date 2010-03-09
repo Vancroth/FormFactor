@@ -21,7 +21,7 @@ public:
 	virtual ~MovingPlatform(); 
 
 	virtual bool frameEvent(const FrameEvent &evt) {return true;}
-	virtual bool MovingPlatform::frameStarted(const FrameEvent& evt);
+	virtual bool frameStarted(const FrameEvent& evt);
 
 	virtual BoundingBox unmovingBound() const;
 

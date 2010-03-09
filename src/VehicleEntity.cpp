@@ -60,7 +60,15 @@ bool VehicleEntity::intersects(FormFactor::Reference<FormFactor::Primitive> &oth
 void VehicleEntity::handleCollision(FormFactor::Reference<FormFactor::Primitive> &objHit, const FormFactor::Vector &dir) {
 	if(!onGround && dir.y==-1) {
 		onGround = true;
-		this->addForce(-FormFactor::PhysicsBody::gravity.force);
+		FormFactor::Vector N = -FormFactor::PhysicsBody::gravity.force;
+
+		// Normal force
+		this->addForce(N);	
+
+		// Friction force
+		float magOfN = N.length();
+		FormFactor::Vector negVel = -getVelocity(); negVel.normalize();
+		this->addForce(negVel * magOfN * objHit->getCoefficientOfFriction());
 	}
 	FormFactor::Vector newVel = objHit->handleVehicleCollision(this->vel, this->mass, dir);
 	this->setVelocity(newVel);

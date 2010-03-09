@@ -215,6 +215,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\ParticleEmitter.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\PhysicsBody.cpp"
 				>
 			</File>
@@ -290,6 +294,10 @@
 			</File>
 			<File
 				RelativePath="..\include\Particle.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\ParticleEmitter.h"
 				>
 			</File>
 			<File

@@ -21,7 +21,7 @@ namespace FormFactor {
 	public:
 		Primitive() {}
 
-		Primitive(Ogre::SceneNode *node) : GameEntity(node) {}
+		Primitive(Ogre::SceneNode *node) : GameEntity(node) {coefficientOfFriction = .3f;}
 
 		/*
 		 * Return the primitive's bounding box in world coordinates.
@@ -52,11 +52,17 @@ namespace FormFactor {
 		virtual bool intersects(Reference<Primitive> &test, Reference<Primitive> &objHit) const = 0;
 
 		virtual Vector handleVehicleCollision(const Vector &vel, float mass, const Vector &dir);
+		virtual Vector handleParticleCollision(const Vector &vel, float mass, const Vector &dir);
 
 		/*
 		 * Return velocity of primitive.
 		 */
 		virtual Vector getVelocity() const {return Vector(0, 0, 0);}
+
+		/*
+		 * Return primitive's kinetic coefficient of friction.
+		 */
+		virtual inline float getCoefficientOfFriction() const { return coefficientOfFriction;}
 
 		/*
 		 * Call to refine the primitive.  The refined primitives
@@ -73,6 +79,8 @@ namespace FormFactor {
 
 
 	protected:
+
+		float coefficientOfFriction;	// kinetic friction coefficient. Subclasses should set this if they don't want the default
 
 	private:
 	};
