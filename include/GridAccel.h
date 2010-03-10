@@ -6,8 +6,7 @@
  * hidden surface removal and proximity to character.
  */
 
-#ifndef _GRIDACCEL_H_
-#define _GRIDACCEL_H_
+#pragma once
 
 #include <vector>
 
@@ -35,7 +34,7 @@ namespace FormFactor {
 	class GridAccel : public Primitive {
 
 	public:
-		GridAccel(const std::vector<Reference<Primitive> > &prims);
+		GridAccel(const std::vector<Reference<Primitive> > &prims, bool refineImmediately);
 
 	private:
 
@@ -49,5 +48,3 @@ namespace FormFactor {
 	};
 
 } // end FormFactor
-
-#endif

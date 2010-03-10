@@ -34,6 +34,18 @@ namespace FormFactor {
 		vel = v;
 	}
 
+	void PhysicsBody::setVelocityX(const float x) {
+		vel.x = x;
+	}
+
+	void PhysicsBody::setVelocityY(const float y) {
+		vel.y = y;
+	}
+
+	void PhysicsBody::setVelocityZ(const float z) {
+		vel.z = z;
+	}
+
 	void PhysicsBody::addForce(const Vector &force) {
 		forces.push_back(Force(force));
 	}

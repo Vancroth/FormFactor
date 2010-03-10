@@ -42,7 +42,7 @@ namespace FormFactor {
 				mailboxes = NULL;
 			} else {
 				mailboxes = new Mailbox*[numPrims];
-				for(unsigned int i = 0; i < numPrims; i++)
+				for(int i = 0; i < numPrims; i++)
 					mailboxes[i] = &mb[primNums[i]];
 			}
 		}

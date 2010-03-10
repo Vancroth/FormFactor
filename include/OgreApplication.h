@@ -1,5 +1,4 @@
 #pragma once
-#include <ode/ode.h>
 #include <Ogre.h>
 #include <OIS/OIS.h>
 
