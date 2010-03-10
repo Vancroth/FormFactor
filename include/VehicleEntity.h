@@ -23,7 +23,7 @@ public:
 
 	// Override PhysicsBody functions
 	virtual void handleCollision(FormFactor::Reference<FormFactor::Primitive> &objHit, const FormFactor::Vector &dir);
-	virtual void updateGraphicalPosition(const FormFactor::Vector &amountShifted);
+	virtual void updateGraphicalPosition(const FormFactor::Vector &shiftAmt);
 	virtual void clearPhysicsState();
 
 protected:
@@ -34,4 +34,6 @@ protected:
 	static const int movementUpSpeed;
 	static const int movementSpeed;
 	static const FormFactor::Vector VehicleEntity::thrust;
+
+
 };

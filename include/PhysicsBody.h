@@ -55,6 +55,7 @@ namespace FormFactor {
 		 * Get the current position of the object's center of mass.
 		 */
 		Point getPosition() const {return pos;}
+		Vector getAmtShifted() const {return amountShifted;}
 
 		virtual Vector getVelocity() const {return vel;}
 
@@ -71,7 +72,7 @@ namespace FormFactor {
 		 * for updating their graphical represenation
 		 * given their new position.
 		 */
-		virtual void updateGraphicalPosition(const Vector &amountShifted) = 0;
+		virtual void updateGraphicalPosition(const Vector &shiftAmt) = 0;
 
 		/*
 		 * Set kd-tree to be used for collisions.
@@ -94,6 +95,7 @@ namespace FormFactor {
 		bool inactive;
 
 		std::vector<Force> forces;
+		Vector amountShifted;		// amount shifted on last update
 
 	private:
 		static std::vector<Reference<PhysicsBody> > bodies;

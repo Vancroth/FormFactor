@@ -11,6 +11,7 @@ namespace FormFactor {
 		mass = m;
 		massInv = 1.f/mass;
 		vel = v;
+		amountShifted = Vector();
 
 		enableGravity(true);
 		inactive = false;
@@ -62,6 +63,7 @@ namespace FormFactor {
 			Vector amountShifted = newPos - bodies[i]->pos;
 			bodies[i]->pos = newPos;
 			bodies[i]->vel = newVel;
+			bodies[i]->amountShifted = amountShifted;		// store for collision detection
 			bodies[i]->updateGraphicalPosition(amountShifted);
 		}
 
@@ -69,15 +71,33 @@ namespace FormFactor {
 		for(unsigned int i = 0; i < bodies.size(); i++) {
 			bodies[i]->clearPhysicsState();
 			if(!bodies[i]->canCollide || bodies[i]->inactive) continue;
-
 			Reference<Primitive> objHit;
 			Reference<Primitive> temp = bodies[i].getPtr();
-			if(tree->intersects(temp, objHit)) {
-				Vector dir = bodies[i]->worldBound().getIntersectDir(objHit->worldBound());
-				bodies[i]->handleCollision(objHit, dir);
+			
+			Vector shiftAmt = bodies[i]->getAmtShifted();
+			float dist = shiftAmt.length();
+			FormFactor::BoundingBox box = bodies[i]->worldBound();
+			int axis = box.getShortestAxis();
+			unsigned int nIterations = (dist/(box.getMaxPoint()[axis] - box.getOrigin()[axis])) + 1;
+			nIterations *= 2;
+			bodies[i]->updateGraphicalPosition(-shiftAmt);		// return to original loc
+			bodies[i]->pos -= shiftAmt;
+			
+			// Do multiple checks
+			shiftAmt /= nIterations;
+			bodies[i]->updateGraphicalPosition(shiftAmt);		// make 1 initial step
+			bodies[i]->pos += shiftAmt;
+
+			for(unsigned int j = 0; j < nIterations; j++) {
+				if(tree->intersects(temp, objHit)) {
+					Vector dir = bodies[i]->worldBound().getIntersectDir(objHit->worldBound());
+					bodies[i]->handleCollision(objHit, dir);
+					break;
+				}
+				bodies[i]->updateGraphicalPosition(shiftAmt);		// update pos
+				bodies[i]->pos += shiftAmt;
 			}
 		}
-
 	}
 
 	Point PhysicsBody::getPosFromSceneNode(Ogre::SceneNode *node) {

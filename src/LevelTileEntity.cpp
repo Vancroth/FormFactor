@@ -5,7 +5,7 @@
 
 namespace FormFactor {
 	const unsigned int LevelTileEntity::TILE_WIDTH =  200;
-	const unsigned int LevelTileEntity::TILE_HEIGHT = 200;
+	const unsigned int LevelTileEntity::TILE_HEIGHT = 100;
 
 	char* terrains[] = {"Examples/GrassFloor", "Examples/BeachStones", "Examples/BumpyMetal"};
 
@@ -26,11 +26,11 @@ LevelTileEntity::LevelTileEntity(SceneNode *node, Reference<LevelEntity> l, unsi
 	powerUp->start();
 	prims.push_back(powerUp);
 
-	memset(buf, 0, 60); sprintf(buf, "PowerUp2-%d", id);
+/*	memset(buf, 0, 60); sprintf(buf, "PowerUp2-%d", id);
 	powerUpNode = node->createChildSceneNode(buf, Vector3(0, 10, -200));
 	powerUp = new FormFactor::PowerUp(powerUpNode);
 	powerUp->start();
-	prims.push_back(powerUp);
+	prims.push_back(powerUp);*/
 
 	makeRoom(node, prims, terrain);
 
@@ -95,6 +95,7 @@ void LevelTileEntity::buildAccelerator() {
 void LevelTileEntity::destroyAccelerator() {
 	// Destroy only reference
 	tree = NULL;
+	prims.clear();		// clear in case still full
 }
 
 bool LevelTileEntity::intersects(Reference<Primitive> &test, Reference<Primitive> &objHit) const {

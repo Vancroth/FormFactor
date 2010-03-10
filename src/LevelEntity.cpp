@@ -2,7 +2,7 @@
 
 namespace FormFactor {
 
-	const unsigned int NUM_TILES = 10;
+	const unsigned int NUM_TILES = 30;
 
 LevelEntity::LevelEntity(SceneNode *node, std::vector<Reference<Primitive> > &worldPrims) : GameEntity(node)
 {
@@ -33,7 +33,7 @@ LevelEntity::LevelEntity(SceneNode *node, std::vector<Reference<Primitive> > &wo
 		tileInfo[i] = LevelTileInfo((i==NUM_TILES-1 ? 0 : 1), &next, prev);
 		
 		next++;
-		displacement += LevelTileEntity::TILE_WIDTH;
+		displacement += LevelTileEntity::TILE_HEIGHT;
 		if(i!=0) prev++;
 	}
 
