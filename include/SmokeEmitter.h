@@ -11,7 +11,7 @@ namespace FormFactor {
 class SmokeEmitter : public ParticleEmitter {
 
 public: 
-	SmokeEmitter(Ogre::SceneNode *node, const Vector &d); 
+	SmokeEmitter(Ogre::SceneNode *node, const Vector &d, int strength=1); 
 	void setDirection(const Vector &d) {dir = d; dir.normalize();}
 
 protected:
@@ -28,12 +28,15 @@ protected:
 	Vector dir;			// direction smoke shoots
 
 private:
+	int str;
+
 	static const unsigned int numSmokeParticles;
 	static const unsigned int nSmokeEmits;
 	static const unsigned int smokeEmitVar;
 	static const unsigned int smokeLife;
 	static const unsigned int smokeLifeVar;
 	static char* smokeMatName;
+
 
 };
 

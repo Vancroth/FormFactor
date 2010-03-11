@@ -19,22 +19,10 @@ LevelTileEntity::LevelTileEntity(SceneNode *node, Reference<LevelEntity> l, unsi
 
 	char *terrain = terrains[rand() % 3];
 		
-	// Create power ups
-	char buf[60]; sprintf(buf, "PowerUp1-%d", id);
-	SceneNode *powerUpNode = node->createChildSceneNode(buf, Vector3(-20, 0, 0));
-	PowerUp *powerUp = new PowerUp(powerUpNode);
-	powerUp->start();
-	prims.push_back(powerUp);
-
-/*	memset(buf, 0, 60); sprintf(buf, "PowerUp2-%d", id);
-	powerUpNode = node->createChildSceneNode(buf, Vector3(0, 10, -200));
-	powerUp = new FormFactor::PowerUp(powerUpNode);
-	powerUp->start();
-	prims.push_back(powerUp);*/
-
 	makeRoom(node, prims, terrain);
 
-	memset(buf, 0, 60); sprintf(buf, "Platform-%d", id);
+
+	char buf[60]; sprintf(buf, "Platform-%d", id);
 	SceneNode *platformNode = node->createChildSceneNode(buf, Vector3(20, 20, 0));
 	MovingPlatform *platform = new MovingPlatform(platformNode, terrain, Point(0, 0, 30), 2.f, PlaneDirection::negZ, 10, 10);
 	platform->start();
@@ -58,6 +46,12 @@ void LevelTileEntity::makeRoom(SceneNode *node, std::vector<Reference<Primitive>
 	FormFactor::Ground *ground = new FormFactor::Ground(groundNode, terrain, PlaneDirection::posY, TILE_WIDTH, TILE_HEIGHT);
 	ground->start();
 	prims.push_back(ground);
+
+	memset(buf, 0, 60); sprintf(buf, "Volcano-%d", id);
+	SceneNode *fireNode = groundNode->createChildSceneNode(buf);
+	FireEmitter *volc = new FireEmitter(fireNode, Vector(0, 11, 0), terrain);
+	volc->start();
+	prims.push_back(volc);
 
 	// ceiling
 	memset(buf, 0, 60); sprintf(buf, "Ceiling-%d", id);
