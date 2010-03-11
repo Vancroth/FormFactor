@@ -13,6 +13,7 @@ class LevelTileEntity : public Primitive {
 
 public:
 	enum PlaneDirection { posX, posY, posZ, negX, negY, negZ};
+	enum TerrainType { GRASS, METAL, LAVA };
 
 	LevelTileEntity(SceneNode *node, Reference<LevelEntity> l, unsigned int tileID);
 	~LevelTileEntity(void);
@@ -32,6 +33,7 @@ public:
 	virtual bool isVisible() const {return false;}
 	virtual bool canIntersect() const {return true;}
 	virtual bool intersects(Reference<Primitive> &test, Reference<Primitive> &objHit) const;
+	virtual Vector handleVehicleCollision(const Vector &vel, float mass, const Vector &dir);
 
 	static const unsigned int TILE_WIDTH, TILE_HEIGHT;
 
@@ -45,6 +47,8 @@ protected:
 
 private:
 	void makeRoom(SceneNode *node, std::vector<Reference<Primitive> > &prims, char* terrain);
+
+	TerrainType curTerrain;
 
 	mutable bool firstIntersect;
 	unsigned int id;

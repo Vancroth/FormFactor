@@ -1,16 +1,36 @@
 #include "VehicleEntity.h"
 
 const FormFactor::Vector VehicleEntity::thrust = FormFactor::Vector(0, 0, -100);
+VehicleEntity* VehicleEntity::vehicle = NULL;
+
+VehicleEntity* VehicleEntity::getSingletonPtr(void) {
+	return vehicle;
+}
 
 VehicleEntity::VehicleEntity(SceneNode *node) : FormFactor::PhysicsBody(node, true, 100) {
+	vehicle = this;
+
+	cameraNode = mNode;
+
+	vehicleNode = cameraNode->createChildSceneNode("Player", Vector3(0, 0, -100));
+	vehicleNode->setDirection(0, 0, 1);
+	vehicleNode->showBoundingBox(true);
+
 	gliderVehicle = mSceneMgr->createEntity("Glider", "scout.mesh");
 	tankVehicle = mSceneMgr->createEntity("Tank", "tank.mesh");
 
-	primaryCooldown = 5;
-	secondaryCooldown = 10;
+	moveSpeed = 0;
+
+	xVelocity = 0;
+	xAcceleration = 0;
+
+	yVelocity = 0;
+	yAcceleration = 0;
+
+	zVelocity = 0;
+	zAcceleration = 0;
 
 	curRoll = 0;
-
 	curMode = NONE;
 
 	transform(GLIDER);
@@ -25,8 +45,26 @@ VehicleEntity::~VehicleEntity() {
 }
 
 bool VehicleEntity::frameEvent(const FrameEvent &evt) {
-	curPrimaryCooldown -= evt.timeSinceLastEvent;
-	curSecondaryCooldown -= evt.timeSinceLastEvent;
+	this->clearPhysicsState();
+
+	// Handle abilities
+	if (primary.cooldown > 0) {
+		primary.cooldown -= evt.timeSinceLastEvent;
+	}
+	if (primary.activated) {
+		primaryAbility(evt.timeSinceLastEvent);
+	}
+
+	if (secondary.cooldown > 0) {
+		secondary.cooldown -= evt.timeSinceLastEvent;
+	}
+	if (secondary.activated) {
+		secondaryAbility(evt.timeSinceLastEvent);
+	}
+
+	// Handle movement
+	this->addForce(FormFactor::Vector(xAcceleration, yAcceleration, zAcceleration));
+
 	return true;
 }
 
@@ -36,8 +74,8 @@ bool VehicleEntity::keyPressed(const OIS::KeyEvent &evt) {
 	switch(evt.key) {
 		case OIS::KC_1: transform(GLIDER); break;
 		case OIS::KC_2: transform(TANK); break;
-		case OIS::KC_A: mNode->yaw(Degree(-90)); break;
-		case OIS::KC_D: mNode->yaw(Degree(90)); break;
+		case OIS::KC_A: cameraNode->yaw(Degree(-90)); break;
+		case OIS::KC_D: cameraNode->yaw(Degree(90)); break;
 	}
 
 	return true;
@@ -52,16 +90,16 @@ bool VehicleEntity::mouseMoved(const OIS::MouseEvent &evt) {
 	//if (evt.state.X.rel > 0) {
 	//	mNode->roll(Degree(45));
 	//}
-	this->setVelocityX(evt.state.X.rel);
+	xAcceleration = evt.state.X.rel * 10.0;
 	return true;
 }
 
 bool VehicleEntity::mousePressed(const OIS::MouseEvent &evt, OIS::MouseButtonID id) {
 	switch (id) {
 		// Activate primary ability
-		case OIS::MB_Left: primaryAbility(); break;
+		case OIS::MB_Left: activatePrimaryAbility(); break;
 	    // Activate secondary ability
-		case OIS::MB_Right: secondaryAbility(); break;
+		case OIS::MB_Right: activateSecondaryAbility(); break;
 	}
 	return true;
 }
@@ -74,8 +112,16 @@ bool VehicleEntity::transform(VehicleMode mode) {
 
 	if (curMode != NONE) {
 		switch (curMode) {
-			case GLIDER: mNode->removeChild("Glider"); break;
-			case TANK: mNode->removeChild("Tank"); break;
+			case GLIDER:
+				vehicleNode->removeChild("Glider");
+				primary.initAbility(5, 10);
+				secondary.initAbility(5, 10);
+				break;
+			case TANK:
+				vehicleNode->removeChild("Tank");
+				primary.initAbility(5, 10);
+				secondary.initAbility(5, 10);
+				break;
 		}
 	}
 
@@ -83,30 +129,63 @@ bool VehicleEntity::transform(VehicleMode mode) {
 		case GLIDER: curVehicle = gliderVehicle; break;
 		case TANK: curVehicle = tankVehicle; break;
 	}
-	mNode->attachObject(curVehicle);
+	vehicleNode->attachObject(curVehicle);
 
 	curMode = mode;
 	return true;
 }
 
-/**
- * Returns TRUE if the ability is activated successfully, FALSE otherwise
- */
-bool VehicleEntity::primaryAbility() {
-	if (curPrimaryCooldown > 0) return false;
- 	this->setVelocityY(25);
-	curPrimaryCooldown = primaryCooldown;
-	return true;
+void VehicleEntity::destroy() {
+	stop();
 }
 
 /**
  * Returns TRUE if the ability is activated successfully, FALSE otherwise
  */
-bool VehicleEntity::secondaryAbility() {
-	if (curSecondaryCooldown > 0) return false;
- 	this->setVelocityZ(50);
-	curSecondaryCooldown = secondaryCooldown;
+bool VehicleEntity::activatePrimaryAbility() {
+	if (!primary.activate()) return false;
+
+	yAcceleration = 250;
+
 	return true;
+}
+
+void VehicleEntity::primaryAbility(Ogre::Real timeElapsed) {
+	primary.duration -= timeElapsed;
+	if (primary.duration < 0) {
+		primary.activated = false;
+		yAcceleration = 0;
+	}
+}
+
+/**
+ * Returns TRUE if the ability is activated successfully, FALSE otherwise
+ */
+bool VehicleEntity::activateSecondaryAbility() {
+	if (!secondary.activate()) return false;
+
+	// Store the previous velocity before the acceleration
+	moveSpeed = getVelocity().z;
+	zAcceleration = -500;
+
+	return true;
+}
+
+void VehicleEntity::secondaryAbility(Ogre::Real timeElapsed) {
+	secondary.duration -= timeElapsed;
+	if (secondary.duration < 0) {
+		secondary.activated = false;
+		zAcceleration = 0;
+		this->setVelocityZ(moveSpeed);
+	}
+}
+
+VehicleEntity::VehicleMode VehicleEntity::getVehicleMode() {
+	return curMode;
+}
+
+bool VehicleEntity::isOnGround() {
+	return onGround;
 }
 
 FormFactor::BoundingBox VehicleEntity::worldBound() const {
@@ -132,12 +211,7 @@ void VehicleEntity::handleCollision(FormFactor::Reference<FormFactor::Primitive>
 		FormFactor::Vector N = -FormFactor::PhysicsBody::gravity.force;
 
 		// Normal force
-		this->addForce(N);	
-
-		// Friction force
-		float magOfN = N.length();
-		FormFactor::Vector negVel = -getVelocity(); negVel.normalize();
-		this->addForce(negVel * magOfN * objHit->getCoefficientOfFriction());
+		this->addForce(N);
 	}
 	FormFactor::Vector newVel = objHit->handleVehicleCollision(this->vel, this->mass, dir);
 	this->setVelocity(newVel);

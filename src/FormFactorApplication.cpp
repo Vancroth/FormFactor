@@ -24,11 +24,15 @@ void FormFactorApplication::createScene()
 {
 	mSceneMgr->setAmbientLight(ColourValue(0.25, 0.25, 0.25));
 
+	SceneNode *cameraNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("PlayerCamera", Vector3(0, sceneShift, 50));
+	mCamera->setDirection(0, 0, -1);
+	cameraNode->attachObject(mCamera);
+
 	Light *light = mSceneMgr->createLight("Light1");
 	light->setType(Light::LT_POINT);
-	light->setPosition(Vector3(250, 150, 250));
 	light->setDiffuseColour(ColourValue::White);
 	light->setSpecularColour(ColourValue::White);
+	cameraNode->attachObject(light);
 
 	mSceneMgr->setSkyDome(true, "Examples/CloudySky", 5, 8);
 	//mSceneMgr->setWorldGeometry("terrain.cfg");
@@ -36,15 +40,9 @@ void FormFactorApplication::createScene()
 	std::vector<FormFactor::Reference<FormFactor::Primitive> > primitives;
 
 	// Create the player
-	SceneNode *playerNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("Player", Vector3(0, sceneShift, 0));
-	playerNode->setDirection(Vector3(0, 0, 1));
-	playerNode->showBoundingBox(true);
-	VehicleEntity *vehicle = new VehicleEntity(playerNode);
+	VehicleEntity *vehicle = new VehicleEntity(cameraNode);
 	vehicle->start();
 	//primitives.push_back(vehicle);
-
-	SceneNode *cameraNode = playerNode->createChildSceneNode("PlayerCamera", Vector3(0, 0, -50));
-	cameraNode->attachObject(mCamera);
 
 	// Create the level
 	SceneNode *levelNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("Level", Vector3(0, sceneShift-25, 0));

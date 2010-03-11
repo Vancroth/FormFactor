@@ -1,7 +1,7 @@
 #include "LevelTileEntity.h"
 #include "LevelEntity.h"
-
 #include "LevelTilePrims.h"
+#include "VehicleEntity.h"
 
 namespace FormFactor {
 	const unsigned int LevelTileEntity::TILE_WIDTH =  200;
@@ -17,7 +17,14 @@ LevelTileEntity::LevelTileEntity(SceneNode *node, Reference<LevelEntity> l, unsi
 
 	// Procedurally build tile and add Primitives to prims
 
-	char *terrain = terrains[rand() % 3];
+	int randTerrain = rand() % 3;
+	if (tileID == 0) { randTerrain = 0; }
+	switch (randTerrain) {
+		case 0: curTerrain = GRASS; break;
+		case 1: curTerrain = METAL; break;
+		case 2: curTerrain = LAVA; break;
+	}
+	char *terrain = terrains[randTerrain];
 		
 	// Create power ups
 	char buf[60]; sprintf(buf, "PowerUp1-%d", id);
@@ -109,5 +116,20 @@ bool LevelTileEntity::intersects(Reference<Primitive> &test, Reference<Primitive
 
 	return tree->intersects(test, objHit);
 }
+
+Vector LevelTileEntity::handleVehicleCollision(const Vector &vel, float mass, const Vector &dir) {
+	VehicleEntity *vehicle = VehicleEntity::getSingletonPtr();
+	switch (curTerrain) {
+		case LAVA:
+			if (vehicle->isOnGround() && vehicle->getVehicleMode() != VehicleEntity::TANK) {
+				vehicle->destroy();
+			}
+			break;
+	}
+
+	Vector v = getVelocity(); 
+	return Primitive::calculateVehicleCollision(v, vel, mass, dir);
+}
+
 
 } // end FormFactor

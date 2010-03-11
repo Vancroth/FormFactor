@@ -16,8 +16,7 @@ namespace FormFactor {
 		}
 	}
 
-	Vector Primitive::handleVehicleCollision(const Vector &vel, float mass, const Vector &dir) {
-		Vector v = getVelocity(); 
+	Vector Primitive::calculateVehicleCollision(Vector &v, const Vector &vel, float mass, const Vector &dir) {
 		if(dir.y == -1) { // on top of platform
 			float newX = (abs(v.x) > .001 ? v.x : vel.x);	// replace z coordinate
 			float newZ = vel.z + v.z;						// Add z coordinate
@@ -29,6 +28,11 @@ namespace FormFactor {
 			Vector velNew = Vector(vel.x - dir.x * abs(vel.x), vel.y - dir.y * abs(vel.y), vel.z - dir.z * abs(vel.z));
 			return velNew + v * d  * (-vDotDir + .01);
 		}
+	}
+
+	Vector Primitive::handleVehicleCollision(const Vector &vel, float mass, const Vector &dir) {
+		Vector v = getVelocity(); 
+		return Primitive::calculateVehicleCollision(v, vel, mass, dir);
 	}
 
 	Vector Primitive::handleParticleCollision(const Vector &vel, float mass, const Vector &dir) {
