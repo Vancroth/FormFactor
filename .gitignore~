@@ -1,0 +1,12 @@
+bin/*
+Debug/*
+
+*.suo
+*.ncb
+*.pdb
+*.obj
+*.vcproj
+
+.DS_Store
+
+*.user

@@ -43,7 +43,7 @@ void OgreApplication::createCamera()
 	mCamera = mSceneMgr->createCamera("PlayerCam");
 
 	mCamera->setNearClipDistance(5);
-	mCamera->setFarClipDistance(2000);
+	mCamera->setFarClipDistance(500);
 }
 //-------------------------------------------------------------------------------------
 void OgreApplication::createFrameListener()

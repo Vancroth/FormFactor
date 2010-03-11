@@ -10,3 +10,4 @@ Debug/*
 .DS_Store
 
 *.user
+*.log

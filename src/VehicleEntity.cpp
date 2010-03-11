@@ -205,6 +205,7 @@ bool VehicleEntity::intersects(FormFactor::Reference<FormFactor::Primitive> &oth
 	}
 }
 
+
 void VehicleEntity::handleCollision(FormFactor::Reference<FormFactor::Primitive> &objHit, const FormFactor::Vector &dir) {
 	if(!onGround && dir.y==-1) {
 		onGround = true;
@@ -223,8 +224,8 @@ void VehicleEntity::clearPhysicsState() {
 	onGround = false;
 }
 	
-void VehicleEntity::updateGraphicalPosition(const FormFactor::Vector &amountShifted) {
-	mNode->translate(amountShifted.getOgreVector());
+void VehicleEntity::updateGraphicalPosition(const FormFactor::Vector &shiftAmt) {
+	mNode->translate(shiftAmt.getOgreVector());
 }
 
 

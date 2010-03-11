@@ -74,8 +74,8 @@ void Particle::handleCollision(FormFactor::Reference<FormFactor::Primitive> &obj
 	this->setVelocity(newVel);
 }
 	
-void Particle::updateGraphicalPosition(const FormFactor::Vector &amountShifted) {
-	mNode->translate(amountShifted.getOgreVector());
+void Particle::updateGraphicalPosition(const FormFactor::Vector &shiftAmt) {
+	mNode->translate(shiftAmt.getOgreVector());
 }
 	
 void Particle::clearPhysicsState() {

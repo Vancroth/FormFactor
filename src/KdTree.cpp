@@ -82,7 +82,7 @@ namespace FormFactor {
 			while(true) {
 				for(unsigned int i = 0; i < nPrims; i++) {
 					unsigned int primNum = primNums[i];
-					edges[axis][2*i] = BoundEdge(primBounds[primNum].getorigin()[axis], primNum, true);
+					edges[axis][2*i] = BoundEdge(primBounds[primNum].getOrigin()[axis], primNum, true);
 					edges[axis][2*i+1] = BoundEdge(primBounds[primNum].getMaxPoint()[axis], primNum, false);
 				}
 				std::sort(&edges[axis][0], &edges[axis][2*nPrims]);
@@ -93,7 +93,7 @@ namespace FormFactor {
 				for(unsigned int i = 0; i < 2*nPrims; i++) {
 					if(edges[axis][i].type == BoundEdge::END) nAbove--;
 					float edgeT = edges[axis][i].t;
-					if(edgeT > nodeBounds.getorigin()[axis] && edgeT < nodeBounds.getMaxPoint()[axis]) {
+					if(edgeT > nodeBounds.getOrigin()[axis] && edgeT < nodeBounds.getMaxPoint()[axis]) {
 						BoundingBox above, below;
 						nodeBounds.getChildBoxes(axis, edgeT, below, above);
 

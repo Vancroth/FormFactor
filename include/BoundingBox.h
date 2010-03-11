@@ -50,7 +50,7 @@ public:
 
 	void getChildBoxes(int axis, float cut, BoundingBox &childBelow, BoundingBox &childAbove) const;
 
-	inline Point getorigin() const {return origin;}
+	inline Point getOrigin() const {return origin;}
 	inline Point getMaxPoint() const {return maxPoint;}
 
 	inline float calcVolume() const {return (maxPoint.x-origin.x)*(maxPoint.y-origin.y)*(maxPoint.z-origin.z);}
