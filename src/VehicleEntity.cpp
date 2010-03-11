@@ -1,8 +1,10 @@
 #include "VehicleEntity.h"
 
-const FormFactor::Vector VehicleEntity::thrust = FormFactor::Vector(0, 0, -100);
+#include "SmokeEmitter.h"
 
-VehicleEntity::VehicleEntity(SceneNode *node) : FormFactor::PhysicsBody(node, true, 100) {
+const FormFactor::Vector VehicleEntity::thrust = FormFactor::Vector(0, 0, -30.f);
+
+VehicleEntity::VehicleEntity(SceneNode *node) : FormFactor::PhysicsBody(node, true, 20) {
 	gliderVehicle = mSceneMgr->createEntity("Glider", "scout.mesh");
 	tankVehicle = mSceneMgr->createEntity("Tank", "tank.mesh");
 
@@ -17,6 +19,12 @@ VehicleEntity::VehicleEntity(SceneNode *node) : FormFactor::PhysicsBody(node, tr
 
 	onGround = false;
 	this->addForce(thrust);
+
+	// Add smoke emitter
+	float sideDist = worldBound().getMaxPoint()[0] - worldBound().getOrigin()[0];
+	float upDist = worldBound().getMaxPoint()[1] - worldBound().getOrigin()[1];
+	float backDist = worldBound().getMaxPoint()[2] - worldBound().getOrigin()[2];
+	FormFactor::SmokeEmitter *smokey = new FormFactor::SmokeEmitter(node->createChildSceneNode(Vector3(-sideDist*.5f, -upDist*2, -backDist*.3)), FormFactor::Vector(0, 0, -1));
 }
 
 VehicleEntity::~VehicleEntity() {
@@ -38,6 +46,12 @@ bool VehicleEntity::keyPressed(const OIS::KeyEvent &evt) {
 		case OIS::KC_2: transform(TANK); break;
 		case OIS::KC_A: mNode->yaw(Degree(-90)); break;
 		case OIS::KC_D: mNode->yaw(Degree(90)); break;
+
+		case OIS::KC_UP: this->setVelocity(FormFactor::Vector(0, 50, 0)); break;
+		case OIS::KC_DOWN: this->setVelocity(FormFactor::Vector(0, -50, 0)); break;
+		case OIS::KC_LEFT: this->setVelocity(FormFactor::Vector(-50, 0, 0)); break;
+		case OIS::KC_RIGHT: this->setVelocity(FormFactor::Vector(50, 0, 0)); break;
+
 	}
 
 	return true;
@@ -104,7 +118,7 @@ bool VehicleEntity::primaryAbility() {
  */
 bool VehicleEntity::secondaryAbility() {
 	if (curSecondaryCooldown > 0) return false;
- 	this->setVelocityZ(50);
+ 	this->setVelocityZ(-50);
 	curSecondaryCooldown = secondaryCooldown;
 	return true;
 }
@@ -113,8 +127,8 @@ FormFactor::BoundingBox VehicleEntity::worldBound() const {
 	return FormFactor::BoundingBox(curVehicle->getWorldBoundingBox(true));
 }
 
-bool VehicleEntity::intersects(FormFactor::Reference<FormFactor::Primitive> &other, FormFactor::Reference<FormFactor::Primitive> &objHit) const {
-	objHit = const_cast<VehicleEntity*>(this);
+bool VehicleEntity::intersects(FormFactor::Reference<FormFactor::Primitive> &other, std::vector<FormFactor::Reference<FormFactor::Primitive> > &objsHit, bool sameTest) const {
+	objsHit.push_back(const_cast<VehicleEntity*>(this));
 	if(other->canIntersect()) {
 		return worldBound().intersects(other->worldBound());
 	} else {
@@ -130,15 +144,17 @@ bool VehicleEntity::intersects(FormFactor::Reference<FormFactor::Primitive> &oth
 void VehicleEntity::handleCollision(FormFactor::Reference<FormFactor::Primitive> &objHit, const FormFactor::Vector &dir) {
 	if(!onGround && dir.y==-1) {
 		onGround = true;
-		FormFactor::Vector N = -FormFactor::PhysicsBody::gravity.force;
+		FormFactor::Vector N = -FormFactor::PhysicsBody::gravity.force * mass;
 
 		// Normal force
 		this->addForce(N);	
 
 		// Friction force
 		float magOfN = N.length();
-		FormFactor::Vector negVel = -getVelocity(); negVel.normalize();
+		FormFactor::Vector negVel = -getVelocity(); negVel.y = 0; negVel.normalize();
 		this->addForce(negVel * magOfN * objHit->getCoefficientOfFriction());
+	} else {
+		int i = 0;
 	}
 	FormFactor::Vector newVel = objHit->handleVehicleCollision(this->vel, this->mass, dir);
 	this->setVelocity(newVel);

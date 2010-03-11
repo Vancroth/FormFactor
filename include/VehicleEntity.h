@@ -27,11 +27,12 @@ public:
 	virtual bool transform(VehicleMode mode);
 	virtual bool primaryAbility();
 	virtual bool secondaryAbility();
+	virtual bool getOnGround() {return onGround;}
 
 	// Override Primitve functions
 	virtual FormFactor::BoundingBox worldBound() const;
 	virtual bool canIntersect() const {return true;} 
-	virtual bool intersects(FormFactor::Reference<FormFactor::Primitive> &other, FormFactor::Reference<FormFactor::Primitive> &objHit) const;
+	virtual bool intersects(FormFactor::Reference<FormFactor::Primitive> &other, std::vector<FormFactor::Reference<FormFactor::Primitive> > &objsHit, bool sameTest=false) const;
 
 	// Override PhysicsBody functions
 	virtual void handleCollision(FormFactor::Reference<FormFactor::Primitive> &objHit, const FormFactor::Vector &dir);

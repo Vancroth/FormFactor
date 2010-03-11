@@ -66,7 +66,7 @@ namespace FormFactor {
 		 * Any object which wants to handle collision must override,
 		 * this function.
 		 */
-		virtual void handleCollision(Reference<Primitive> &objHit, const Vector &dir) {}
+		virtual void handleCollision(Reference<Primitive> &objsHit, const Vector &dir) {}
 
 		virtual void clearPhysicsState() {}
 
@@ -89,6 +89,9 @@ namespace FormFactor {
 
 
 		static const Force gravity;
+
+			virtual bool getOnGround() {return false;}
+
 	protected:
 		float mass, massInv;
 		Point pos;

@@ -2,7 +2,7 @@
 
 namespace FormFactor {
 
-	const Force PhysicsBody::gravity = Force(Vector(0, -9.8f, 0));
+	const Force PhysicsBody::gravity = Force(Vector(0, -1.8f, 0));
 	std::vector<Reference<PhysicsBody> > PhysicsBody::bodies;
 	Reference<KdTree> PhysicsBody::tree;
 
@@ -61,7 +61,7 @@ namespace FormFactor {
 		for(unsigned int i = 0; i < bodies.size(); i++) {
 			if(bodies[i]->inactive) continue;
 			// Add forces
-			Vector totalForce = gravity.force * bodies[i]->gravityOn;
+			Vector totalForce = gravity.force * bodies[i]->mass * bodies[i]->gravityOn;
 			for(unsigned int j = 0; j < bodies[i]->forces.size(); j++)
 				totalForce += bodies[i]->forces[j].force;
 
@@ -70,6 +70,8 @@ namespace FormFactor {
 			
 			// Do simple constant acceleration approximation
 			Vector newVel = bodies[i]->vel + accel * timeElapse;
+			if(newVel.y < 0)
+				int y = 0;
 			Point newPos = bodies[i]->pos + bodies[i]->vel * timeElapse + accel * .5 * timeElapse * timeElapse;
 
 			Vector amountShifted = newPos - bodies[i]->pos;
@@ -83,7 +85,7 @@ namespace FormFactor {
 		for(unsigned int i = 0; i < bodies.size(); i++) {
 			bodies[i]->clearPhysicsState();
 			if(!bodies[i]->canCollide || bodies[i]->inactive) continue;
-			Reference<Primitive> objHit;
+			std::vector<Reference<Primitive> > objsHit;
 			Reference<Primitive> temp = bodies[i].getPtr();
 			
 			Vector shiftAmt = bodies[i]->getAmtShifted();
@@ -91,7 +93,7 @@ namespace FormFactor {
 			FormFactor::BoundingBox box = bodies[i]->worldBound();
 			int axis = box.getShortestAxis();
 			unsigned int nIterations = (dist/(box.getMaxPoint()[axis] - box.getOrigin()[axis])) + 1;
-			nIterations *= 2;
+			nIterations *= 4;
 			bodies[i]->updateGraphicalPosition(-shiftAmt);		// return to original loc
 			bodies[i]->pos -= shiftAmt;
 			
@@ -101,9 +103,11 @@ namespace FormFactor {
 			bodies[i]->pos += shiftAmt;
 
 			for(unsigned int j = 0; j < nIterations; j++) {
-				if(tree->intersects(temp, objHit)) {
-					Vector dir = bodies[i]->worldBound().getIntersectDir(objHit->worldBound());
-					bodies[i]->handleCollision(objHit, dir);
+				if(tree->intersects(temp, objsHit)) {
+					for(unsigned int k = 0; k < objsHit.size(); k++) {
+						Vector dir = bodies[i]->worldBound().getIntersectDir(objsHit[k]->worldBound());
+						bodies[i]->handleCollision(objsHit[k], dir);
+					}
 					break;
 				}
 				bodies[i]->updateGraphicalPosition(shiftAmt);		// update pos

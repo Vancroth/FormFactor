@@ -5,7 +5,7 @@
 
 namespace FormFactor {
 	const unsigned int LevelTileEntity::TILE_WIDTH =  200;
-	const unsigned int LevelTileEntity::TILE_HEIGHT = 100;
+	const unsigned int LevelTileEntity::TILE_HEIGHT = 200;
 
 	char* terrains[] = {"Examples/GrassFloor", "Examples/BeachStones", "LevelTiles/Lava"};
 
@@ -98,7 +98,7 @@ void LevelTileEntity::destroyAccelerator() {
 	prims.clear();		// clear in case still full
 }
 
-bool LevelTileEntity::intersects(Reference<Primitive> &test, Reference<Primitive> &objHit) const {
+bool LevelTileEntity::intersects(Reference<Primitive> &test, std::vector<Reference<Primitive> > &objsHit, bool sameTest) const {
 	if(!worldBound().intersects(test->worldBound()))
 		return false;
 
@@ -108,7 +108,7 @@ bool LevelTileEntity::intersects(Reference<Primitive> &test, Reference<Primitive
 		if(!tree) const_cast<LevelTileEntity*>(this)->buildAccelerator();  // if tree not built, build own tree
 	}
 
-	return tree->intersects(test, objHit);
+	return tree && tree->intersects(test, objsHit, true);
 }
 
 } // end FormFactor

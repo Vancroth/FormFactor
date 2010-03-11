@@ -55,8 +55,8 @@ BoundingBox MovingPlatform::unmovingBound() const {
 	return BoundingBox(movingPlatform->getWorldBoundingBox(true));
 }
 
-bool MovingPlatform::intersects(FormFactor::Reference<FormFactor::Primitive> &other, FormFactor::Reference<FormFactor::Primitive> &objHit) const {
-	objHit = const_cast<MovingPlatform*>(this);
+bool MovingPlatform::intersects(Reference<Primitive> &other, std::vector<Reference<Primitive> > &objsHit, bool sameTest) const {
+	objsHit.push_back(const_cast<MovingPlatform*>(this));
 	if(other->canIntersect()) {
 		return unmovingBound().intersects(other->worldBound());
 	} else {

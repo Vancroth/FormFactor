@@ -104,12 +104,12 @@ public:
 	}
 
 	float operator[](int i) const {
-		assert(i > 0 && i <= 2);
+		assert(i >= 0 && i <= 2);
 		return (&x)[i];
 	}
 
 	float& operator[](int i) {
-		assert(i > 0 && i <= 2);
+		assert(i >= 0 && i <= 2);
 		return (&x)[i];
 	}
 

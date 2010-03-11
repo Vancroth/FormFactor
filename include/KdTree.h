@@ -94,7 +94,7 @@ namespace FormFactor {
 		KdTree(const std::vector<Reference<Primitive> > &prims, int icost, int tcost, float ebonus, int maxp, int maxDepth);
 
 		// Check for intersection with tree
-		bool intersects(Reference<Primitive> &test, Reference<Primitive> &objHit) const;
+		bool intersects(Reference<Primitive> &test, std::vector<Reference<Primitive> > &objsHit, bool sameTest=false) const;
 
 		BoundingBox worldBound() const {return bounds;}
 
@@ -104,7 +104,7 @@ namespace FormFactor {
 		void buildTree(unsigned int nodeNum, const BoundingBox &nodeBounds, const std::vector<BoundingBox> primBounds, int *primNums,
 			unsigned int nPrims, unsigned int depth, BoundEdge *edges[3], int *prims0, int *prims1);
 
-		bool intersectsRecurse(int nodeNum, Reference<Primitive> &other, Reference<Primitive> &objHit, int id) const;
+		bool intersectsRecurse(int nodeNum, Reference<Primitive> &other, std::vector<Reference<Primitive> > &objsHit, int id) const;
 
 
 		KdNode *nodes;

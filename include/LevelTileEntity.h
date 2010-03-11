@@ -31,7 +31,7 @@ public:
 	virtual BoundingBox worldBound() const {return bounds;}
 	virtual bool isVisible() const {return false;}
 	virtual bool canIntersect() const {return true;}
-	virtual bool intersects(Reference<Primitive> &test, Reference<Primitive> &objHit) const;
+	virtual bool intersects(Reference<Primitive> &test, std::vector<FormFactor::Reference<FormFactor::Primitive> > &objsHit, bool sameTest) const;
 
 	static const unsigned int TILE_WIDTH, TILE_HEIGHT;
 

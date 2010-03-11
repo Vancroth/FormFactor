@@ -19,7 +19,7 @@ public:
 	// Override Primitve functions
 	virtual BoundingBox worldBound() const;
 	virtual bool canIntersect() const {return true;} 
-	virtual bool intersects(Reference<Primitive> &other, Reference<Primitive> &objHit) const;
+	virtual bool intersects(Reference<Primitive> &other, std::vector<Reference<Primitive> > &objsHit, bool sameTest=false) const;
 
 protected:
 	Ogre::Entity *powerUp;

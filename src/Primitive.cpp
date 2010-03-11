@@ -34,11 +34,12 @@ namespace FormFactor {
 
 	Vector Primitive::handleParticleCollision(const Vector &vel, float mass, const Vector &dir) {
 		Vector v = getVelocity(); 
+		int add = 1;
 		float d = v.normalize();
 		float vDotDir = dir.dot(v);
-		if(vDotDir > 0) return -vel * vDotDir * .01; // same direction
-		Vector velNew = Vector(vel.x - dir.x * abs(vel.x), vel.y - dir.y * abs(vel.y), vel.z - dir.z * abs(vel.z));
-		return velNew + v * d  * (-vDotDir + .01);
+		if(vDotDir > 0) add = 0; // same direction. don't add its velocity
+		Vector velNew = Vector(vel.x - dir.x * abs(vel.x) * 1.002f, vel.y - dir.y * abs(vel.y) * 1.002f, vel.z - dir.z * abs(vel.z) * 1.002f);
+		return velNew + v * add * d  * (-vDotDir + .01);
 	}
 
 }

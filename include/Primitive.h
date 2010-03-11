@@ -49,7 +49,7 @@ namespace FormFactor {
 		 *
 		 * Return reference to specific primitive hit in objHit.
 		 */
-		virtual bool intersects(Reference<Primitive> &test, Reference<Primitive> &objHit) const = 0;
+		virtual bool intersects(Reference<Primitive> &test, std::vector<Reference<Primitive> > &objsHit, bool sameTest = false) const = 0;
 
 		virtual Vector handleVehicleCollision(const Vector &vel, float mass, const Vector &dir);
 		virtual Vector handleParticleCollision(const Vector &vel, float mass, const Vector &dir);
