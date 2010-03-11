@@ -14,12 +14,17 @@
 
 namespace FormFactor {
 
-	class Primitive : public GameEntity {
+	class Primitive : public FormFactor::ReferenceCounted {
 	
 	public:
 		Primitive() {}
 
-		Primitive(Ogre::SceneNode *node) : GameEntity(node) {coefficientOfFriction = .3f; damping = .8f; }
+		Primitive(Ogre::SceneNode *node) {
+			mSceneMgr = Root::getSingletonPtr()->getSceneManager("Default");
+			mNode = node;
+			coefficientOfFriction = .3f;
+			damping = .8f;
+		}
 
 		/*
 		 * Return the primitive's bounding box in world coordinates.
@@ -79,8 +84,10 @@ namespace FormFactor {
 
 	protected:
 
+		SceneManager *mSceneMgr;
 		float coefficientOfFriction;	// kinetic friction coefficient. Subclasses should set this if they don't want the default
 		float damping;					// Measures the amount of energy lost when colliding with a surface
+		Ogre::SceneNode *mNode;
 
 	private:
 	};

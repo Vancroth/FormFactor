@@ -21,12 +21,11 @@ namespace FormFactor {
 		unsigned int nSuccessors;
 	};
 
-class LevelEntity : public GameEntity {
+class LevelEntity : public FormFactor::ReferenceCounted {
 
 public:
 	LevelEntity(SceneNode *node, std::vector<Reference<Primitive> > &worldPrims);
 	~LevelEntity(void);
-	virtual bool frameEvent(const FrameEvent &evt);
 
 	/*
 	 * Allocate the kd-tree for successors and deallocate tree for parent.

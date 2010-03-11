@@ -7,7 +7,7 @@
 
 using namespace Ogre;
 
-class VehicleEntity : public FormFactor::PhysicsBody
+class VehicleEntity : public FormFactor::PhysicsBody, public GameEntity
 {
 public: 
 	enum VehicleMode { GLIDER, TANK };

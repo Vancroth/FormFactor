@@ -12,9 +12,6 @@ public:
 	Ground(Ogre::SceneNode *node, char *matName, int dir, unsigned int tileWidth, unsigned int tileHeight); 
 	virtual ~Ground(); 
 
-	virtual bool frameEvent(const Ogre::FrameEvent &evt);
-	virtual bool keyPressed(const OIS::KeyEvent &evt);
-
 	// Override Primitve functions
 	virtual BoundingBox worldBound() const;
 	virtual bool canIntersect() const {return true;} 

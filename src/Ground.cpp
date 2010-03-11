@@ -24,15 +24,6 @@ Ground::~Ground() {
 	mSceneMgr->destroyEntity(ground);
 }
 
-bool Ground::frameEvent(const Ogre::FrameEvent &evt) {
-	return true;
-}
-
-bool Ground::keyPressed(const OIS::KeyEvent &evt) {
-	return true;
-}
-
-
 BoundingBox Ground::worldBound() const {
 	return BoundingBox(ground->getWorldBoundingBox(true)).getExpanded(planeDir[direction] * -10.f);
 }

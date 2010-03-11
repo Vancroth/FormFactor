@@ -6,18 +6,12 @@
 
 using namespace Ogre;
 
-class GameEntity : public FrameListener, public OIS::KeyListener, public OIS::MouseListener, public FormFactor::ReferenceCounted
+class GameEntity : public FrameListener, public OIS::KeyListener, public OIS::MouseListener
 {
 public:
-	GameEntity() {mNode = NULL;}
+	GameEntity() {}
 
-	GameEntity(SceneNode *node) {
-		mSceneMgr = Root::getSingletonPtr()->getSceneManager("Default");
-		mNode = node;
-	}
-
-	virtual ~GameEntity(void) {
-	}
+	virtual ~GameEntity(void) {}
 
 	virtual void start() {
 		Root::getSingletonPtr()->addFrameListener(this);
@@ -68,6 +62,4 @@ public:
 
 protected:
 	bool started;
-	SceneManager *mSceneMgr;
-	SceneNode *mNode;
 };

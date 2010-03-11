@@ -7,7 +7,7 @@
 
 namespace FormFactor {
 
-class PowerUp : public Primitive
+class PowerUp : public Primitive, public GameEntity
 {
 public: 
 	PowerUp(Ogre::SceneNode *node); 

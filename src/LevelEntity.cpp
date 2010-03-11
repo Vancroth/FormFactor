@@ -4,7 +4,7 @@ namespace FormFactor {
 
 	const unsigned int NUM_TILES = 100;
 
-LevelEntity::LevelEntity(SceneNode *node, std::vector<Reference<Primitive> > &worldPrims) : GameEntity(node)
+LevelEntity::LevelEntity(SceneNode *node, std::vector<Reference<Primitive> > &worldPrims)
 {
 	nTiles = 0;
 
@@ -49,22 +49,18 @@ LevelEntity::~LevelEntity(void)
 	delete[] tileInfo;
 }
 
-bool LevelEntity::frameEvent(const FrameEvent &evt) {
-	return true;
-}
-
 void LevelEntity::allocateTileTrees(unsigned int tileID) const {
 	LevelTileInfo *info = &tileInfo[tileID];
 
 	// Kill old trees
-	for(unsigned int i = 0; i < info->predecessor; i++) {
+	for(int i = 0; i < info->predecessor; i++) {
 		LevelTileEntity *ptr = const_cast<LevelTileEntity*>(tiles[i].getPtr());
 		ptr->destroyAccelerator();
 	}
 
 	// Don't kill immediate predecessor incase still overlapping
 
-	for(unsigned int i = info->predecessor + 1; i < tileID; i++) {
+	for(int i = info->predecessor + 1; i < tileID; i++) {
 		LevelTileEntity *ptr = const_cast<LevelTileEntity*>(tiles[i].getPtr());
 		ptr->destroyAccelerator();
 	}

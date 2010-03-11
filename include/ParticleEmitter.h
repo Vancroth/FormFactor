@@ -23,7 +23,7 @@ namespace FormFactor {
 		Reference<Particle> p;
 	};
 
-class ParticleEmitter : public Primitive {
+class ParticleEmitter : public Primitive, public GameEntity {
 
 public: 
 	ParticleEmitter(Ogre::SceneNode *node, unsigned int maxNumParticles, char* matName,
@@ -32,8 +32,6 @@ public:
 	virtual ~ParticleEmitter();
 
 	virtual bool frameStarted(const FrameEvent& evt) {emitParticles(evt.timeSinceLastFrame); return true;}
-	virtual bool frameEvent(const Ogre::FrameEvent &evt) {return true;}
-	virtual bool keyPressed(const OIS::KeyEvent &evt) {return true;}
 
 	// Override Primitve functions
 	virtual BoundingBox worldBound() const {return BoundingBox();}

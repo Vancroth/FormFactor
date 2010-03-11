@@ -34,9 +34,6 @@ public:
 	 */
 	bool update(float timeElapse, float cameraZ);
 
-
-	virtual bool frameEvent(const FrameEvent &evt) {return true;}
-
 	// Override Primitve functions
 	virtual FormFactor::BoundingBox worldBound() const;
 	virtual bool canIntersect() const {return true;} 

@@ -56,7 +56,6 @@ void LevelTileEntity::makeRoom(SceneNode *node, std::vector<Reference<Primitive>
 	char buf[60]; sprintf(buf, "Ground-%d", id);
 	SceneNode *groundNode = node->createChildSceneNode(buf, Vector3(0, 0, 0));
 	FormFactor::Ground *ground = new FormFactor::Ground(groundNode, terrain, POSY, TILE_WIDTH, TILE_HEIGHT);
-	ground->start();
 	prims.push_back(ground);
 
 	//memset(buf, 0, 60); sprintf(buf, "Volcano-%d", id);
@@ -69,26 +68,19 @@ void LevelTileEntity::makeRoom(SceneNode *node, std::vector<Reference<Primitive>
 	memset(buf, 0, 60); sprintf(buf, "Ceiling-%d", id);
 	SceneNode *ceilingNode = node->createChildSceneNode(buf, Vector3(0, height, 0));
 	ground = new FormFactor::Ground(ceilingNode, terrain, NEGY, TILE_WIDTH, TILE_HEIGHT);
-	ground->start();
 	prims.push_back(ground);
 
 	// walls
 	memset(buf, 0, 60); sprintf(buf, "Wall0-%d", id);
 	SceneNode *wallNode = node->createChildSceneNode(buf, Vector3(-float(TILE_WIDTH)*.5f, height*.5f, 0));
 	ground = new FormFactor::Ground(wallNode, terrain, POSX, height, TILE_HEIGHT);
-	ground->start();
 	prims.push_back(ground);
 
 	memset(buf, 0, 60); sprintf(buf, "Wall1-%d", id);
 	wallNode = node->createChildSceneNode(buf, Vector3(TILE_WIDTH*.5f, height*.5, 0));
 	ground = new FormFactor::Ground(wallNode, terrain, NEGX, height, TILE_HEIGHT);
-	ground->start();
 	prims.push_back(ground);
 
-}
-
-bool LevelTileEntity::frameEvent(const FrameEvent &evt) {
-	return true;
 }
 
 void LevelTileEntity::buildAccelerator() {

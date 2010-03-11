@@ -47,19 +47,21 @@ void FormFactorApplication::createScene()
 	std::vector<FormFactor::Reference<FormFactor::Primitive> > primitives;
 
 	SceneNode *vehicleNode = cameraNode->createChildSceneNode("Player", Vector3(0, -5, -100));
-	vehicleNode->setDirection(0, 0, 1);
-	vehicleNode->showBoundingBox(true);
 
 	// Create the player
 	glider = new GliderEntity(cameraNode, vehicleNode);
-	tank = new TankEntity(cameraNode, vehicleNode);
 	glider->attachVehicle();
 	vehicle = glider;
+
+	vehicleNode->setDirection(0, 0, 1);
+	vehicleNode->showBoundingBox(true);
+
+	// Create other vehicles that we'll need
+	tank = new TankEntity(cameraNode, vehicleNode);
 
 	// Create the level
 	SceneNode *levelNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("Level", Vector3(0, sceneShift-40, 0));
 	FormFactor::LevelEntity *level = new FormFactor::LevelEntity(levelNode, primitives);
-	level->start();
 	
 	// Build main collision tree
 	tree = new FormFactor::KdTree(primitives, 40, 1, .5f, 4, 20);

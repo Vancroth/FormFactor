@@ -20,8 +20,6 @@ public:
 
 	TerrainType getTerrainType();
 
-	virtual bool frameEvent(const FrameEvent &evt);
-
 	/*
 	 * Build and destroy a collision accelerator for this tile.
 	 */

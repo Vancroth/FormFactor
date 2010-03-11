@@ -7,7 +7,7 @@
 
 namespace FormFactor {
 
-class MovingPlatform : public Primitive
+class MovingPlatform : public Primitive, public GameEntity
 {
 public: 
 	/*
@@ -20,7 +20,7 @@ public:
 							   unsigned int platformWidth, unsigned int platformHeight); 
 	virtual ~MovingPlatform(); 
 
-	virtual bool frameEvent(const FrameEvent &evt) {return true;}
+
 	virtual bool frameStarted(const FrameEvent& evt);
 
 	virtual BoundingBox unmovingBound() const;
