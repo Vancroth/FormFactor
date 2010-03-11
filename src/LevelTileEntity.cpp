@@ -4,7 +4,7 @@
 #include "VehicleEntity.h"
 
 namespace FormFactor {
-	const unsigned int LevelTileEntity::TILE_WIDTH =  200;
+	const unsigned int LevelTileEntity::TILE_WIDTH =  50;
 	const unsigned int LevelTileEntity::TILE_HEIGHT = 100;
 
 	char* terrains[] = {"Examples/GrassFloor", "Examples/BeachStones", "LevelTiles/Lava"};
@@ -26,12 +26,13 @@ LevelTileEntity::LevelTileEntity(SceneNode *node, Reference<LevelEntity> l, unsi
 	}
 	char *terrain = terrains[randTerrain];
 		
-	// Create power ups
-	char buf[60]; sprintf(buf, "PowerUp1-%d", id);
-	SceneNode *powerUpNode = node->createChildSceneNode(buf, Vector3(-20, 0, 0));
-	PowerUp *powerUp = new PowerUp(powerUpNode);
-	powerUp->start();
-	prims.push_back(powerUp);
+	char buf[60];
+	//// Create power ups
+	//char buf[60]; sprintf(buf, "PowerUp1-%d", id);
+	//SceneNode *powerUpNode = node->createChildSceneNode(buf, Vector3(-20, 0, 0));
+	//PowerUp *powerUp = new PowerUp(powerUpNode);
+	//powerUp->start();
+	//prims.push_back(powerUp);
 
 /*	memset(buf, 0, 60); sprintf(buf, "PowerUp2-%d", id);
 	powerUpNode = node->createChildSceneNode(buf, Vector3(0, 10, -200));
@@ -41,11 +42,11 @@ LevelTileEntity::LevelTileEntity(SceneNode *node, Reference<LevelEntity> l, unsi
 
 	makeRoom(node, prims, terrain);
 
-	memset(buf, 0, 60); sprintf(buf, "Platform-%d", id);
-	SceneNode *platformNode = node->createChildSceneNode(buf, Vector3(20, 20, 0));
-	MovingPlatform *platform = new MovingPlatform(platformNode, terrain, Point(0, 0, 30), 2.f, PlaneDirection::negZ, 10, 10);
-	platform->start();
-	prims.push_back(platform);
+	//memset(buf, 0, 60); sprintf(buf, "Platform-%d", id);
+	//SceneNode *platformNode = node->createChildSceneNode(buf, Vector3(20, 20, 0));
+	//MovingPlatform *platform = new MovingPlatform(platformNode, terrain, Point(0, 0, 30), 2.f, PlaneDirection::negZ, 10, 10);
+	//platform->start();
+	//prims.push_back(platform);
 
 	// Make bounding box encompass all prims
 	for(unsigned int i = 0; i < prims.size(); i++)
@@ -54,6 +55,11 @@ LevelTileEntity::LevelTileEntity(SceneNode *node, Reference<LevelEntity> l, unsi
 
 LevelTileEntity::~LevelTileEntity(void)
 {
+}
+
+LevelTileEntity::TerrainType LevelTileEntity::getTerrainType()
+{
+	return this->curTerrain;
 }
 
 void LevelTileEntity::makeRoom(SceneNode *node, std::vector<Reference<Primitive> > &prims, char* terrain) {
@@ -66,25 +72,25 @@ void LevelTileEntity::makeRoom(SceneNode *node, std::vector<Reference<Primitive>
 	ground->start();
 	prims.push_back(ground);
 
-	// ceiling
-	memset(buf, 0, 60); sprintf(buf, "Ceiling-%d", id);
-	SceneNode *ceilingNode = node->createChildSceneNode(buf, Vector3(0, height, 0));
-	ground = new FormFactor::Ground(ceilingNode, terrain, PlaneDirection::negY, TILE_WIDTH, TILE_HEIGHT);
-	ground->start();
-	prims.push_back(ground);
+	//// ceiling
+	//memset(buf, 0, 60); sprintf(buf, "Ceiling-%d", id);
+	//SceneNode *ceilingNode = node->createChildSceneNode(buf, Vector3(0, height, 0));
+	//ground = new FormFactor::Ground(ceilingNode, terrain, PlaneDirection::negY, TILE_WIDTH, TILE_HEIGHT);
+	//ground->start();
+	//prims.push_back(ground);
 
-	// walls
-	memset(buf, 0, 60); sprintf(buf, "Wall0-%d", id);
-	SceneNode *wallNode = node->createChildSceneNode(buf, Vector3(-float(TILE_WIDTH)*.5f, height*.5f, 0));
-	ground = new FormFactor::Ground(wallNode, terrain, PlaneDirection::posX, height, TILE_HEIGHT);
-	ground->start();
-	prims.push_back(ground);
+	//// walls
+	//memset(buf, 0, 60); sprintf(buf, "Wall0-%d", id);
+	//SceneNode *wallNode = node->createChildSceneNode(buf, Vector3(-float(TILE_WIDTH)*.5f, height*.5f, 0));
+	//ground = new FormFactor::Ground(wallNode, terrain, PlaneDirection::posX, height, TILE_HEIGHT);
+	//ground->start();
+	//prims.push_back(ground);
 
-	memset(buf, 0, 60); sprintf(buf, "Wall1-%d", id);
-	wallNode = node->createChildSceneNode(buf, Vector3(TILE_WIDTH*.5f, height*.5, 0));
-	ground = new FormFactor::Ground(wallNode, terrain, PlaneDirection::negX, height, TILE_HEIGHT);
-	ground->start();
-	prims.push_back(ground);
+	//memset(buf, 0, 60); sprintf(buf, "Wall1-%d", id);
+	//wallNode = node->createChildSceneNode(buf, Vector3(TILE_WIDTH*.5f, height*.5, 0));
+	//ground = new FormFactor::Ground(wallNode, terrain, PlaneDirection::negX, height, TILE_HEIGHT);
+	//ground->start();
+	//prims.push_back(ground);
 
 }
 
@@ -120,13 +126,15 @@ bool LevelTileEntity::intersects(Reference<Primitive> &test, Reference<Primitive
 
 Vector LevelTileEntity::handleVehicleCollision(const Vector &vel, float mass, const Vector &dir) {
 	VehicleEntity *vehicle = VehicleEntity::getSingletonPtr();
-	switch (curTerrain) {
-		case LAVA:
-			if (vehicle->isOnGround() && vehicle->getVehicleMode() != VehicleEntity::TANK) {
-				vehicle->destroy();
-			}
-			break;
-	}
+	vehicle->collideWithLevelTile(this);
+
+	//switch (curTerrain) {
+	//	case LAVA:
+	//		if (vehicle->isOnGround() && vehicle->getVehicleMode() != VehicleEntity::TANK) {
+	//			vehicle->destroy();
+	//		}
+	//		break;
+	//}
 
 	Vector v = getVelocity(); 
 	return Primitive::calculateVehicleCollision(v, vel, mass, dir);

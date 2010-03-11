@@ -3,10 +3,9 @@
 #include "GameEntity.h"
 #include "PhysicsBody.h"
 #include "Reference.h"
+#include "LevelTileEntity.h"
 
 using namespace Ogre;
-
-
 
 class VehicleEntity : public FormFactor::PhysicsBody
 {
@@ -22,9 +21,12 @@ public:
 		bool activated;
 
 		VehicleAbility() {
+			activated = false;
+			cooldown = 0;
+			duration = 0;
 		}
 
-		void initAbility(float maxCD, float maxD) {
+		void init(float maxCD, float maxD) {
 			maxCooldown = maxCD;
 			maxDuration = maxD;
 			activated = false;
@@ -42,6 +44,7 @@ public:
 	};
 
 	static VehicleEntity* VehicleEntity::getSingletonPtr(void);
+	static void VehicleEntity::setSingletonPtr(VehicleEntity *entity);
 
 	VehicleEntity(SceneNode *node); 
 	virtual ~VehicleEntity(); 
@@ -51,18 +54,19 @@ public:
 	virtual bool mouseMoved(const OIS::MouseEvent &evt);
 	virtual bool mousePressed(const OIS::MouseEvent &evt, OIS::MouseButtonID id);
 
+	virtual Entity *getEntity();
+
 	// Vehicle functions
 	virtual void destroy();
-	virtual bool transform(VehicleMode mode);
 
-	virtual bool activatePrimaryAbility();
-	virtual void primaryAbility(Ogre::Real timeElapsed);
+	virtual bool activatePrimaryAbility() = 0;
+	virtual void primaryAbility(Ogre::Real timeElapsed) = 0;
 
-	virtual bool activateSecondaryAbility();
-	virtual void secondaryAbility(Ogre::Real timeElapsed);
+	virtual bool activateSecondaryAbility() = 0;
+	virtual void secondaryAbility(Ogre::Real timeElapsed) = 0;
 
-	virtual VehicleMode getVehicleMode();
-	virtual bool isOnGround();
+	VehicleMode getVehicleMode();
+	bool isOnGround();
 
 	// Override Primitve functions
 	virtual FormFactor::BoundingBox worldBound() const;
@@ -74,10 +78,11 @@ public:
 	virtual void updateGraphicalPosition(const FormFactor::Vector &shiftAmt);
 	virtual void clearPhysicsState();
 
+	// Other collision functions
+	virtual void collideWithLevelTile(FormFactor::LevelTileEntity *levelEntity) = 0;
+
 protected:
-	Entity *gliderVehicle;
-	Entity *tankVehicle;
-	Entity *curVehicle;
+	Entity *vehicleEntity;
 
 	float moveSpeed;
 
@@ -96,6 +101,7 @@ protected:
 	VehicleAbility secondary;
 
 	float curRoll;
+	float rollDirection;
 
 	VehicleMode curMode;
 	SceneNode *cameraNode;

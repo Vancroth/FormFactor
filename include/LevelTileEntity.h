@@ -13,10 +13,13 @@ class LevelTileEntity : public Primitive {
 
 public:
 	enum PlaneDirection { posX, posY, posZ, negX, negY, negZ};
-	enum TerrainType { GRASS, METAL, LAVA };
+	enum TerrainType { GRASS, METAL, LAVA, AIR };
 
 	LevelTileEntity(SceneNode *node, Reference<LevelEntity> l, unsigned int tileID);
 	~LevelTileEntity(void);
+
+	TerrainType getTerrainType();
+
 	virtual bool frameEvent(const FrameEvent &evt);
 
 	/*

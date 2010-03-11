@@ -2,14 +2,18 @@
 
 #include <vector>
 
-#include "VehicleEntity.h"
+#include "GliderEntity.h"
+#include "TankEntity.h"
 #include "LevelEntity.h"
 #include "PowerUp.h"
 
 #include "PhysicsBody.h"
 #include "Primitive.h"
 
-int sceneShift = 80;
+int sceneShift = 50;
+SceneNode *cameraNode;
+VehicleEntity *vehicle;
+
 //-------------------------------------------------------------------------------------
 FormFactorApplication::FormFactorApplication()
 {
@@ -17,14 +21,15 @@ FormFactorApplication::FormFactorApplication()
 //-------------------------------------------------------------------------------------
 FormFactorApplication::~FormFactorApplication()
 {
-
 }
 //-------------------------------------------------------------------------------------
 void FormFactorApplication::createScene()
 {
+	InputController::getSingletonPtr()->addKeyListener(this);
+
 	mSceneMgr->setAmbientLight(ColourValue(0.25, 0.25, 0.25));
 
-	SceneNode *cameraNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("PlayerCamera", Vector3(0, sceneShift, 50));
+	cameraNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("PlayerCamera", Vector3(0, sceneShift, 40));
 	mCamera->setDirection(0, 0, -1);
 	cameraNode->attachObject(mCamera);
 
@@ -40,18 +45,23 @@ void FormFactorApplication::createScene()
 	std::vector<FormFactor::Reference<FormFactor::Primitive> > primitives;
 
 	// Create the player
-	VehicleEntity *vehicle = new VehicleEntity(cameraNode);
+	vehicle = new GliderEntity(cameraNode);
 	vehicle->start();
 	//primitives.push_back(vehicle);
 
 	// Create the level
-	SceneNode *levelNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("Level", Vector3(0, sceneShift-25, 0));
+	SceneNode *levelNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("Level", Vector3(0, sceneShift-30, 0));
 	FormFactor::LevelEntity *level = new FormFactor::LevelEntity(levelNode, primitives);
 	level->start();
 	
 	// Build main collision tree
 	tree = new FormFactor::KdTree(primitives, 40, 1, .5f, 4, 20);
 	FormFactor::PhysicsBody::setTree(tree);
+}
+//-------------------------------------------------------------------------------------
+void FormFactorApplication::destroyScene() {
+	mSceneMgr->destroyAllMovableObjects();
+	InputController::getSingletonPtr()->removeKeyListener(this);
 }
 //-------------------------------------------------------------------------------------
 bool FormFactorApplication::frameStarted(const FrameEvent& evt)
@@ -63,6 +73,22 @@ bool FormFactorApplication::frameStarted(const FrameEvent& evt)
     return OgreApplication::frameStarted(evt);
 }
 //-------------------------------------------------------------------------------------
+bool FormFactorApplication::keyPressed(const OIS::KeyEvent &evt)
+{
+	switch(evt.key) {
+		case OIS::KC_ESCAPE: destroyScene(); exit(0);
+		case OIS::KC_0:
+			delete vehicle;
+			vehicle = new TankEntity(cameraNode);
+			break;
+	}
+	return true;
+}
+//-------------------------------------------------------------------------------------
+bool FormFactorApplication::keyReleased(const OIS::KeyEvent &evt)
+{
+	return true;
+}
 
 #if OGRE_PLATFORM == PLATFORM_WIN32 || OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 #define WIN32_LEAN_AND_MEAN

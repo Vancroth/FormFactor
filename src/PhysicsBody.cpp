@@ -9,7 +9,6 @@ namespace FormFactor {
 	PhysicsBody::PhysicsBody(Ogre::SceneNode *node, bool collides, float m, const Vector &v) : Primitive(node) {
 		canCollide = collides;
 		mass = m;
-		massInv = 1.f/mass;
 		vel = v;
 		amountShifted = Vector();
 
@@ -23,7 +22,6 @@ namespace FormFactor {
 
 	void PhysicsBody::setMass(float m) {
 		mass = m;
-		massInv = 1.f/mass;
 	}
 
 	void PhysicsBody::setPosition(const Point &p) {
@@ -66,7 +64,7 @@ namespace FormFactor {
 				totalForce += bodies[i]->forces[j].force;
 
 			// Obtain acceleration
-			Vector accel = totalForce * bodies[i]->massInv;
+			Vector accel = totalForce / bodies[i]->mass;
 			
 			// Do simple constant acceleration approximation
 			Vector newVel = bodies[i]->vel + accel * timeElapse;

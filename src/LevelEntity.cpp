@@ -26,6 +26,7 @@ LevelEntity::LevelEntity(SceneNode *node, std::vector<Reference<Primitive> > &wo
 	int next = 1; int prev = 0;
 	unsigned int displacement = 0;
 	for(unsigned int i = 0; i < NUM_TILES; i++) {
+		int skip = rand() % 100;
 		char buf[60]; sprintf(buf, "Tile%d", i);
 		tile = new LevelTileEntity(node->createChildSceneNode(buf, Vector3(0, 0, -float(displacement))), this, nTiles++);
 		tiles.push_back(tile);
