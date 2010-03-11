@@ -84,7 +84,7 @@ namespace FormFactor {
 		// Check for/Handle collisions
 		for(unsigned int i = 0; i < bodies.size(); i++) {
 			bodies[i]->clearPhysicsState();
-			if(!bodies[i]->canCollide || bodies[i]->inactive) continue;
+			if(!bodies[i]->doesCollision() || bodies[i]->inactive) continue;
 			std::vector<Reference<Primitive> > objsHit;
 			Reference<Primitive> temp = bodies[i].getPtr();
 			

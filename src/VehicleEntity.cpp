@@ -2,7 +2,7 @@
 
 #include "SmokeEmitter.h"
 
-const FormFactor::Vector VehicleEntity::thrust = FormFactor::Vector(0, 0, -30.f);
+const FormFactor::Vector VehicleEntity::thrust = FormFactor::Vector(0, 0, -100.f);
 
 VehicleEntity::VehicleEntity(SceneNode *node) : FormFactor::PhysicsBody(node, true, 20) {
 	gliderVehicle = mSceneMgr->createEntity("Glider", "scout.mesh");
@@ -24,7 +24,7 @@ VehicleEntity::VehicleEntity(SceneNode *node) : FormFactor::PhysicsBody(node, tr
 	float sideDist = worldBound().getMaxPoint()[0] - worldBound().getOrigin()[0];
 	float upDist = worldBound().getMaxPoint()[1] - worldBound().getOrigin()[1];
 	float backDist = worldBound().getMaxPoint()[2] - worldBound().getOrigin()[2];
-	FormFactor::SmokeEmitter *smokey = new FormFactor::SmokeEmitter(node->createChildSceneNode(Vector3(-sideDist*.5f, -upDist*2, -backDist*.3)), FormFactor::Vector(0, 0, -1));
+	FormFactor::SmokeEmitter *smokey = new FormFactor::SmokeEmitter(node->createChildSceneNode(Vector3(-sideDist*.5f, -upDist*2, -backDist*.1)), FormFactor::Vector(0, 0, -1));
 }
 
 VehicleEntity::~VehicleEntity() {

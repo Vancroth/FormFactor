@@ -6,6 +6,7 @@ unsigned int Particle::numParticles = 0;
 
 Particle::Particle(Ogre::SceneNode *node, char *matName) : PhysicsBody(node) {
 	inactive = true;
+	canCollide = false;
 
 	char buf[60]; sprintf(buf, "Particle%d", numParticles++);
 	particle = mSceneMgr->createBillboardSet(buf, 1);
@@ -50,6 +51,7 @@ bool Particle::update(float timeElapse, float cameraZ) {
 		mNode->setPosition(0, 0, 0);		// reset position
 		particle->getBillboard(0)->setColour(Ogre::ColourValue(color.x, color.y, color.z, 0.f));
 		particle->getBillboard(0)->setDimensions(0.f, 0.f);
+		canCollide = false;
 		return true;
 	} else {
 		color += colorDelta * time;

@@ -77,6 +77,7 @@ namespace FormFactor {
 		 */
 		virtual void updateGraphicalPosition(const Vector &shiftAmt) = 0;
 
+		virtual inline bool doesCollision() {return canCollide;}
 		/*
 		 * Set kd-tree to be used for collisions.
 		 */

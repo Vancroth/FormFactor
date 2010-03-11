@@ -26,7 +26,7 @@ public:
 	 * Initialize a particle.
 	 */
 	void initParticle(unsigned int l, const Point &p, const Vector &v, float m, const Vector &newColor, const Vector &newColorDelta,
-						float newAlpha, float newAlphaDelta, const Vector &newDim, const Vector &newDimDela, std::vector<Vector> &forces, bool collide=true);
+						float newAlpha, float newAlphaDelta, const Vector &newDim, const Vector &newDimDela, std::vector<Vector> &forces, bool collide=false);
 
 	/*
 	 * Update the particle's state.
@@ -46,6 +46,7 @@ public:
 	virtual void handleCollision(FormFactor::Reference<FormFactor::Primitive> &objHit, const FormFactor::Vector &dir);
 	virtual void updateGraphicalPosition(const FormFactor::Vector &shiftAmt);
 	virtual void clearPhysicsState();
+	virtual inline bool doesCollision() {return canCollide;}
 
 protected:
 	Ogre::BillboardSet* particle;		// particle is represented as a billboard

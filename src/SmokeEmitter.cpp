@@ -1,11 +1,11 @@
 #include "SmokeEmitter.h"
 
 namespace FormFactor {
-const unsigned int SmokeEmitter::numSmokeParticles = 200;
-const unsigned int SmokeEmitter::nSmokeEmits = 20;
+const unsigned int SmokeEmitter::numSmokeParticles = 400;
+const unsigned int SmokeEmitter::nSmokeEmits = 40;
 const unsigned int SmokeEmitter::smokeEmitVar = 10;
-const unsigned int SmokeEmitter::smokeLife = 2;
-const unsigned int SmokeEmitter::smokeLifeVar = 2;
+const unsigned int SmokeEmitter::smokeLife = 4;
+const unsigned int SmokeEmitter::smokeLifeVar = 3;
 char* SmokeEmitter::smokeMatName = "Examples/Smoke";
 
 
@@ -22,12 +22,12 @@ void SmokeEmitter::updatePosition() {
 
 
 Vector SmokeEmitter::produceInitVelocity() const {
-	float x = getValueFromVariance(0.f, .2f) * (1.f - dir.x);
-	float y = getValueFromVariance(0.f, .4f) * (1.f - dir.y);
+	float x = getValueFromVariance(0.f, .05f) * (1.f - dir.x);
+	float y = getValueFromVariance(0.f, .3f) * (1.f - dir.y);
 	float z = getValueFromVariance(0.f, .4f) * (1.f - dir.z);
 	Vector d = dir + Vector(x, y, z);
 	d.normalize();
-	return d * float(getValueFromVariance(unsigned int(40), unsigned int(20)));
+	return d * float(getValueFromVariance(unsigned int(20), unsigned int(10)));
 }
 
 Point SmokeEmitter::produceInitPosition() const {
@@ -43,7 +43,7 @@ void SmokeEmitter::produceColor(Vector &color, Vector &finalColor, float *alpha,
 
 void SmokeEmitter::produceDimensions(Vector &dim, Vector &finalDim) const {
 	dim.set(1.f, 1.f, 0.f);
-	finalDim.set(8.f, 8.f, 0.f);
+	finalDim.set(10.f, 10.f, 0.f);
 }
 	
 float SmokeEmitter::getParticleMass() const {
@@ -51,7 +51,7 @@ float SmokeEmitter::getParticleMass() const {
 }
 	
 void SmokeEmitter::getForces(std::vector<Vector> &forces) const {
-	forces.push_back(-PhysicsBody::gravity.force*2.f*getParticleMass());
+	forces.push_back(-PhysicsBody::gravity.force*1.5f*getParticleMass());
 }
 
 } // end FormFactor
