@@ -1,15 +1,10 @@
 #include "TankEntity.h"
 
-TankEntity::TankEntity(SceneNode *node) : VehicleEntity(node)
+TankEntity::TankEntity(SceneNode *node) : VehicleEntity(node, String("Tank"), String("scout.mesh"))
 {
-	vehicle = this;
+	curMode = TANK;
 
-	vehicleEntity = mSceneMgr->createEntity("Tank", "scout.mesh");
-
-	vehicleNode = mNode->createChildSceneNode("Tank", Vector3(0, -5, -100));
 	vehicleNode->setDirection(0, 0, 1);
-	vehicleNode->showBoundingBox(true);
-	vehicleNode->attachObject(vehicleEntity);
 
 	primary.init(5, 10);
 	secondary.init(5, 10);
@@ -30,44 +25,19 @@ bool TankEntity::keyPressed(const OIS::KeyEvent &evt) {
 /**
  * Returns TRUE if the ability is activated successfully, FALSE otherwise
  */
-bool TankEntity::activatePrimaryAbility() {
-	if (!primary.activate()) return false;
-	fprintf(stderr, "Primary ability activated\n");
-
-	yAcceleration = 200;
-
-	return true;
+void TankEntity::activatePrimary() {
 }
 
-void TankEntity::primaryAbility(Ogre::Real timeElapsed) {
-	primary.duration -= timeElapsed;
-	if (primary.duration < 0) {
-		primary.activated = false;
-		yAcceleration = 0;
-	}
+void TankEntity::deactivatePrimary() {
 }
 
 /**
  * Returns TRUE if the ability is activated successfully, FALSE otherwise
  */
-bool TankEntity::activateSecondaryAbility() {
-	if (!secondary.activate()) return false;
-	fprintf(stderr, "Secondary ability activated\n");
-
-	// Store the previous velocity before the acceleration
-	moveSpeed = getVelocity().z;
-	zAcceleration = -1000;
-
-	return true;
+void TankEntity::activateSecondary() {
 }
 
-void TankEntity::secondaryAbility(Ogre::Real timeElapsed) {
-	secondary.duration -= timeElapsed;
-	if (secondary.duration < 0) {
-		secondary.activated = false;
-		zAcceleration = 0;
-		this->setVelocityZ(moveSpeed);
-	}
+void TankEntity::deactivateSecondary() {
 }
 
 void TankEntity::collideWithLevelTile(FormFactor::LevelTileEntity *levelEntity) {

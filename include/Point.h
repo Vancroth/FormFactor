@@ -57,6 +57,10 @@ public:
 		return *this;
 	}
 
+	Point operator-(const Vector &vec) const {
+		return Point(x - vec.x, y - vec.y, z - vec.z);
+	}
+
 	Point operator+(const Vector &vec) const {
 		return Point(x + vec.x, y + vec.y, z + vec.z);
 	}

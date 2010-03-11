@@ -13,11 +13,11 @@ public:
 
 	virtual bool keyPressed(const OIS::KeyEvent &evt);
 
-	virtual bool activatePrimaryAbility();
-	virtual void primaryAbility(Ogre::Real timeElapsed);
+	virtual void activatePrimary();
+	virtual void deactivatePrimary();
 
-	virtual bool activateSecondaryAbility();
-	virtual void secondaryAbility(Ogre::Real timeElapsed);
+	virtual void activateSecondary();
+	virtual void deactivateSecondary();
 
 	virtual void collideWithLevelTile(FormFactor::LevelTileEntity *levelEntity);
 };

@@ -1,6 +1,7 @@
 #include "KdTree.h"
 
 namespace FormFactor {
+	const unsigned int MAX_OBJECTS_HIT = 5;
 
 	KdTree::KdTree(const std::vector<Reference<Primitive> > &p, int icost, int tcost, float ebonus, int maxp, int maxDepth)  {
 		runId = 0;
@@ -144,14 +145,30 @@ namespace FormFactor {
 			buildTree(nodes[nodeNum].aboveChild, child1Bounds, primBounds, prims1, n1, depth-1, edges, prims0, prims1 + nPrims);
 	}
 
-	bool KdTree::intersects(Reference<Primitive> &test, Reference<Primitive> &objHit) const {
+	bool KdTree::intersects(Reference<Primitive> &test, std::vector<Reference<Primitive> > &objsHit, bool sameTest) const {
 
 		unsigned int nodeNum = 0;
 		runId = (runId + 1) % 10;
-		return intersectsRecurse(nodeNum, test, objHit, runId);
+
+		std::vector<Reference<Primitive> > objHit;
+		bool hit = false;
+		if(!sameTest) {
+			hit = intersectsRecurse(nodeNum, test, objHit, runId);
+			objsHit = objHit;
+		} else {
+			for(unsigned int i = 0; i < MAX_OBJECTS_HIT; i++) {
+				bool hitRound = intersectsRecurse(nodeNum, test, objHit, runId);
+				if(hitRound) 
+					objsHit.push_back(objHit[0]);	// hit another obj
+				else
+					break;						// no more objs to hit
+				hit = hit || hitRound;
+			}
+		}
+		return hit;
 	}
 
-	bool KdTree::intersectsRecurse(int nodeNum, Reference<Primitive> &test, Reference<Primitive> &objHit, int id) const {
+	bool KdTree::intersectsRecurse(int nodeNum, Reference<Primitive> &test, std::vector<Reference<Primitive> > &objHit, int id) const {
 		KdNode *node = &nodes[nodeNum];
 
 		if(node->isLeaf()) { // leaf
@@ -160,7 +177,7 @@ namespace FormFactor {
 				if(mailboxes[i]->lastId == runId) continue;		// already tested
 				mailboxes[i]->lastId = runId;
 				if(mailboxes[i]->prim->canIntersect()) {
-					Reference<Primitive> hitObj;
+					std::vector<Reference<Primitive> > hitObj;
 					if(mailboxes[i]->prim->intersects(test, hitObj)) {
 						objHit = hitObj;
 						return true;
@@ -169,7 +186,7 @@ namespace FormFactor {
 					std::vector<Reference<Primitive> > refined;
 					mailboxes[i]->prim->fullyRefine(refined);
 					for(unsigned int i = 0; i < refined.size(); i++) {
-						Reference<Primitive> hitObj;
+						std::vector<Reference<Primitive> > hitObj;
 						if(refined[i]->intersects(test, hitObj)) {
 							objHit = hitObj;
 							return true;

@@ -34,8 +34,19 @@ public:
 			duration = 0;
 		}
 
+		bool updateState(float timeElapsed) {
+			bool wasActivated = activated;
+			cooldown = (cooldown - timeElapsed > 0 ? cooldown - timeElapsed : 0);
+			duration = (duration - timeElapsed > 0 ? cooldown - timeElapsed : 0);
+			if (wasActivated && duration == 0.0f) {
+				activated = false;
+				return true;
+			}
+			return false;
+		}
+
 		bool activate() {
-			if (cooldown > 0) return false;
+			if (cooldown > 0.0f) return false;
 			activated = true;
 			cooldown = maxCooldown;
 			duration = maxDuration;
@@ -46,7 +57,7 @@ public:
 	static VehicleEntity* VehicleEntity::getSingletonPtr(void);
 	static void VehicleEntity::setSingletonPtr(VehicleEntity *entity);
 
-	VehicleEntity(SceneNode *node); 
+	VehicleEntity(SceneNode *node, String &name, String &mesh); 
 	virtual ~VehicleEntity(); 
 
 	virtual bool frameEvent(const FrameEvent &evt);
@@ -54,16 +65,14 @@ public:
 	virtual bool mouseMoved(const OIS::MouseEvent &evt);
 	virtual bool mousePressed(const OIS::MouseEvent &evt, OIS::MouseButtonID id);
 
-	virtual Entity *getEntity();
+	Entity *getEntity();
 
 	// Vehicle functions
-	virtual void destroy();
+	virtual void activatePrimary() = 0;
+	virtual void deactivatePrimary() = 0;
 
-	virtual bool activatePrimaryAbility() = 0;
-	virtual void primaryAbility(Ogre::Real timeElapsed) = 0;
-
-	virtual bool activateSecondaryAbility() = 0;
-	virtual void secondaryAbility(Ogre::Real timeElapsed) = 0;
+	virtual void activateSecondary() = 0;
+	virtual void deactivateSecondary() = 0;
 
 	VehicleMode getVehicleMode();
 	bool isOnGround();
@@ -71,7 +80,7 @@ public:
 	// Override Primitve functions
 	virtual FormFactor::BoundingBox worldBound() const;
 	virtual bool canIntersect() const {return true;} 
-	virtual bool intersects(FormFactor::Reference<FormFactor::Primitive> &other, FormFactor::Reference<FormFactor::Primitive> &objHit) const;
+	virtual bool intersects(FormFactor::Reference<Primitive> &other, std::vector<FormFactor::Reference<Primitive> > &objsHit, bool sameTest = false) const;
 
 	// Override PhysicsBody functions
 	virtual void handleCollision(FormFactor::Reference<FormFactor::Primitive> &objHit, const FormFactor::Vector &dir);

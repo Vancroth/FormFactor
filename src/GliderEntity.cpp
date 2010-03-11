@@ -1,17 +1,12 @@
 #include "GliderEntity.h"
 
-GliderEntity::GliderEntity(SceneNode *node) : VehicleEntity(node)
+GliderEntity::GliderEntity(SceneNode *node) : VehicleEntity(node, String("Glider"), String("scout.mesh"))
 {
-	vehicle = this;
+	curMode = GLIDER;
 
-	vehicleEntity = mSceneMgr->createEntity("Glider", "scout.mesh");
-
-	vehicleNode = mNode->createChildSceneNode("Glider", Vector3(0, -5, -100));
 	vehicleNode->setDirection(0, 0, 1);
-	vehicleNode->showBoundingBox(true);
-	vehicleNode->attachObject(vehicleEntity);
 
-	primary.init(1, 5);
+	primary.init(.5, 5);
 	secondary.init(1, 5);
 }
 
@@ -27,49 +22,27 @@ bool GliderEntity::keyPressed(const OIS::KeyEvent &evt) {
 	return true;
 }
 
-/**
- * Returns TRUE if the ability is activated successfully, FALSE otherwise
- */
-bool GliderEntity::activatePrimaryAbility() {
-	if (!primary.activate()) return false;
-	fprintf(stderr, "Primary ability activated\n");
-
-	yAcceleration = 200;
-
-	return true;
+void GliderEntity::activatePrimary() {
+	yAcceleration = 800;
 }
 
-void GliderEntity::primaryAbility(Ogre::Real timeElapsed) {
-	if (primary.duration < 0) {
-		primary.activated = false;
-		yAcceleration = 0;
-	}
+void GliderEntity::deactivatePrimary() {
+	yAcceleration = 0;
 }
 
-/**
- * Returns TRUE if the ability is activated successfully, FALSE otherwise
- */
-bool GliderEntity::activateSecondaryAbility() {
-	if (!secondary.activate()) return false;
-	fprintf(stderr, "Secondary ability activated\n");
-
+void GliderEntity::activateSecondary() {
 	// Store the previous velocity before the acceleration
 	moveSpeed = getVelocity().z;
 	zAcceleration = -1000;
-
-	return true;
 }
 
-void GliderEntity::secondaryAbility(Ogre::Real timeElapsed) {
-	if (secondary.duration < 0) {
-		secondary.activated = false;
-		zAcceleration = 0;
-		this->setVelocityZ(moveSpeed);
-	}
+void GliderEntity::deactivateSecondary() {
+	this->setVelocityZ(moveSpeed);
+	zAcceleration = 0;
 }
 
 void GliderEntity::collideWithLevelTile(FormFactor::LevelTileEntity *levelEntity) {
 	switch (levelEntity->getTerrainType()) {
-		case FormFactor::LevelTileEntity::LAVA: destroy(); break;
+		case FormFactor::LevelTileEntity::LAVA: break;
 	}
 }

@@ -12,7 +12,7 @@ class LevelEntity;
 class LevelTileEntity : public Primitive {
 
 public:
-	enum PlaneDirection { posX, posY, posZ, negX, negY, negZ};
+	enum PlaneDirection { POSX, POSY, POSZ, NEGX, NEGY, NEGZ};
 	enum TerrainType { GRASS, METAL, LAVA, AIR };
 
 	LevelTileEntity(SceneNode *node, Reference<LevelEntity> l, unsigned int tileID);
@@ -35,8 +35,9 @@ public:
 	virtual BoundingBox worldBound() const {return bounds;}
 	virtual bool isVisible() const {return false;}
 	virtual bool canIntersect() const {return true;}
-	virtual bool intersects(Reference<Primitive> &test, Reference<Primitive> &objHit) const;
+
 	virtual Vector handleVehicleCollision(const Vector &vel, float mass, const Vector &dir);
+	virtual bool intersects(Reference<Primitive> &test, std::vector<FormFactor::Reference<FormFactor::Primitive> > &objsHit, bool sameTest) const;
 
 	static const unsigned int TILE_WIDTH, TILE_HEIGHT;
 

@@ -1,0 +1,43 @@
+<<<<<<< HEAD:FormFactor.sln
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FormFactor", "FormFactor.vcproj", "{394B5FB9-7D13-4D3F-A73F-4122B7BE94BB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{394B5FB9-7D13-4D3F-A73F-4122B7BE94BB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{394B5FB9-7D13-4D3F-A73F-4122B7BE94BB}.Debug|Win32.Build.0 = Debug|Win32
+		{394B5FB9-7D13-4D3F-A73F-4122B7BE94BB}.Release|Win32.ActiveCfg = Release|Win32
+		{394B5FB9-7D13-4D3F-A73F-4122B7BE94BB}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
+=======
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual C++ Express 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Form Factor", "Form Factor\Form Factor.vcproj", "{394B5FB9-7D13-4D3F-A73F-4122B7BE94BB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{394B5FB9-7D13-4D3F-A73F-4122B7BE94BB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{394B5FB9-7D13-4D3F-A73F-4122B7BE94BB}.Debug|Win32.Build.0 = Debug|Win32
+		{394B5FB9-7D13-4D3F-A73F-4122B7BE94BB}.Release|Win32.ActiveCfg = Release|Win32
+		{394B5FB9-7D13-4D3F-A73F-4122B7BE94BB}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
+>>>>>>> 291f787a31373f11f1676f710f54135265538ac6:Form Factor.sln

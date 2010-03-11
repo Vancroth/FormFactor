@@ -30,8 +30,8 @@ BoundingBox PowerUp::worldBound() const {
 	return BoundingBox(powerUp->getWorldBoundingBox(true));
 }
 
-bool PowerUp::intersects(FormFactor::Reference<FormFactor::Primitive> &other, FormFactor::Reference<FormFactor::Primitive> &objHit) const {
-	objHit = const_cast<PowerUp*>(this);
+bool PowerUp::intersects(Reference<Primitive> &other, std::vector<Reference<Primitive> > &objsHit, bool sameTest) const {
+	objsHit.push_back(const_cast<PowerUp*>(this));
 	if(other->canIntersect()) {
 		return worldBound().intersects(other->worldBound());
 	} else {
