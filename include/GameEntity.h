@@ -12,24 +12,24 @@ public:
 	GameEntity() {mNode = NULL;}
 
 	GameEntity(SceneNode *node) {
-		Root::getSingletonPtr()->addFrameListener(this);
 		mSceneMgr = Root::getSingletonPtr()->getSceneManager("Default");
 		mNode = node;
-		InputController::getSingletonPtr()->addKeyListener(this);
-		InputController::getSingletonPtr()->addMouseListener(this);
 	}
 
 	virtual ~GameEntity(void) {
-		Root::getSingletonPtr()->removeFrameListener(this);
-		InputController::getSingletonPtr()->removeKeyListener(this);
-		InputController::getSingletonPtr()->removeMouseListener(this);
 	}
 
 	virtual void start() {
+		Root::getSingletonPtr()->addFrameListener(this);
+		InputController::getSingletonPtr()->addKeyListener(this);
+		InputController::getSingletonPtr()->addMouseListener(this);
 		started = true;
 	}
 
 	virtual void stop() {
+		Root::getSingletonPtr()->removeFrameListener(this);
+		InputController::getSingletonPtr()->removeKeyListener(this);
+		InputController::getSingletonPtr()->removeMouseListener(this);
 		started = false;
 	}
 	

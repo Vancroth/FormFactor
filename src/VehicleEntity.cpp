@@ -13,30 +13,17 @@ void VehicleEntity::setSingletonPtr(VehicleEntity *entity) {
 	vehicle = entity;
 }
 
-VehicleEntity::VehicleEntity(SceneNode *node, String &name, String &mesh) : FormFactor::PhysicsBody(node, true, 500) {
-	vehicle = this;
+VehicleEntity::VehicleEntity(SceneNode *cNode, SceneNode *vNode, String &name, String &mesh) : FormFactor::PhysicsBody(cNode, true, 500) {
+	cameraNode = cNode;
+	vehicleNode = vNode;
 
 	vehicleEntity = mSceneMgr->createEntity(name, mesh);
 
-	vehicleNode = mNode->createChildSceneNode(name, Vector3(0, -5, -100));
-	vehicleNode->showBoundingBox(true);
-	vehicleNode->attachObject(vehicleEntity);
-
-	cameraNode = mNode;
-
-	moveSpeed = 0;
-
-	xVelocity = 0;
 	xAcceleration = 0;
-
-	yVelocity = 0;
 	yAcceleration = 0;
-
-	zVelocity = 0;
 	zAcceleration = 0;
 
 	curRoll = 0;
-	curMode = NONE;
 
 	onGround = false;
 	clearPhysicsState();
@@ -45,10 +32,17 @@ VehicleEntity::VehicleEntity(SceneNode *node, String &name, String &mesh) : Form
 	float sideDist = worldBound().getMaxPoint()[0] - worldBound().getOrigin()[0];
 	float upDist = worldBound().getMaxPoint()[1] - worldBound().getOrigin()[1];
 	float backDist = worldBound().getMaxPoint()[2] - worldBound().getOrigin()[2];
-	//FormFactor::SmokeEmitter *smokey = new FormFactor::SmokeEmitter(node->createChildSceneNode(Vector3(-sideDist*.5f, -upDist*2, -backDist*.1)), FormFactor::Vector(0, 0, -1));
+	//FormFactor::SmokeEmitter *smokey = new FormFactor::SmokeEmitter(mNode->createChildSceneNode(Vector3(-sideDist*.5f, -upDist*2, -backDist*.1)), FormFactor::Vector(0, 0, -1));
 }
 
 VehicleEntity::~VehicleEntity() {
+}
+
+void VehicleEntity::attachVehicle() {
+	VehicleEntity::setSingletonPtr(this);
+	vehicleNode->detachAllObjects();
+	vehicleNode->attachObject(vehicleEntity);
+	start();
 }
 
 Entity *VehicleEntity::getEntity() {
@@ -93,9 +87,9 @@ bool VehicleEntity::keyPressed(const OIS::KeyEvent &evt) {
 bool VehicleEntity::mouseMoved(const OIS::MouseEvent &evt) {
 	// TODO: Make the vehicle bank left and right while moving, currently attached to camera so causes problems
 	if (evt.state.X.rel < 0) {
-		rollDirection = -5;
+		rollDirection = -1;
 	} else if (evt.state.X.rel > 0) {
-		rollDirection = 5;
+		rollDirection = 1;
 	}
 	xAcceleration = (evt.state.X.rel * evt.state.X.rel) * 3;
 	if (evt.state.X.rel < 0) {
@@ -143,18 +137,8 @@ bool VehicleEntity::intersects(FormFactor::Reference<Primitive> &other, std::vec
 void VehicleEntity::handleCollision(FormFactor::Reference<FormFactor::Primitive> &objHit, const FormFactor::Vector &dir) {
 	if(!onGround && dir.y==-1) {
 		onGround = true;
-		FormFactor::Vector N = -FormFactor::PhysicsBody::gravity.force * mass;
-
-		// Normal force
-		this->addForce(N);	
-
-		// Friction force
-		float magOfN = N.length();
-		FormFactor::Vector negVel = -getVelocity(); negVel.y = 0; negVel.normalize();
-		this->addForce(negVel * magOfN * objHit->getCoefficientOfFriction());
-	} else {
-		int i = 0;
 	}
+	this->coefficientOfFriction = objHit->getCoefficientOfFriction();
 	FormFactor::Vector newVel = objHit->handleVehicleCollision(this->vel, this->mass, dir);
 	this->setVelocity(newVel);
 }
@@ -162,6 +146,18 @@ void VehicleEntity::handleCollision(FormFactor::Reference<FormFactor::Primitive>
 void VehicleEntity::clearPhysicsState() {
 	this->clearForces();
 	this->addForce(thrust);
+	if (onGround) {
+		FormFactor::Vector N = -FormFactor::PhysicsBody::gravity.force * mass;
+
+		// Normal force
+		this->addForce(N);
+
+		// Friction force
+		float magOfN = N.length();
+		FormFactor::Vector negVel = -getVelocity(); negVel.y = 0; negVel.normalize();
+		this->addForce(negVel * magOfN * this->getCoefficientOfFriction());
+	}
+	onGround = false;
 }
 	
 void VehicleEntity::updateGraphicalPosition(const FormFactor::Vector &shiftAmt) {

@@ -10,8 +10,10 @@
 #include "PhysicsBody.h"
 #include "Primitive.h"
 
-int sceneShift = 50;
-SceneNode *cameraNode;
+int sceneShift = 60;
+
+GliderEntity *glider;
+TankEntity *tank;
 VehicleEntity *vehicle;
 
 //-------------------------------------------------------------------------------------
@@ -29,7 +31,7 @@ void FormFactorApplication::createScene()
 
 	mSceneMgr->setAmbientLight(ColourValue(0.25, 0.25, 0.25));
 
-	cameraNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("PlayerCamera", Vector3(0, sceneShift, 40));
+	SceneNode *cameraNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("PlayerCamera", Vector3(0, sceneShift, 40));
 	mCamera->setDirection(0, 0, -1);
 	cameraNode->attachObject(mCamera);
 
@@ -39,18 +41,23 @@ void FormFactorApplication::createScene()
 	light->setSpecularColour(ColourValue::White);
 	cameraNode->attachObject(light);
 
-	mSceneMgr->setSkyDome(true, "Examples/CloudySky", 5, 8);
+	//mSceneMgr->setSkyDome(true, "Examples/CloudySky", 5, 8);
 	//mSceneMgr->setWorldGeometry("terrain.cfg");
 
 	std::vector<FormFactor::Reference<FormFactor::Primitive> > primitives;
 
+	SceneNode *vehicleNode = cameraNode->createChildSceneNode("Player", Vector3(0, -5, -100));
+	vehicleNode->setDirection(0, 0, 1);
+	vehicleNode->showBoundingBox(true);
+
 	// Create the player
-	vehicle = new GliderEntity(cameraNode);
-	vehicle->start();
-	//primitives.push_back(vehicle);
+	glider = new GliderEntity(cameraNode, vehicleNode);
+	tank = new TankEntity(cameraNode, vehicleNode);
+	glider->attachVehicle();
+	vehicle = glider;
 
 	// Create the level
-	SceneNode *levelNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("Level", Vector3(0, sceneShift-30, 0));
+	SceneNode *levelNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("Level", Vector3(0, sceneShift-40, 0));
 	FormFactor::LevelEntity *level = new FormFactor::LevelEntity(levelNode, primitives);
 	level->start();
 	
@@ -75,12 +82,13 @@ bool FormFactorApplication::frameStarted(const FrameEvent& evt)
 //-------------------------------------------------------------------------------------
 bool FormFactorApplication::keyPressed(const OIS::KeyEvent &evt)
 {
+	if (vehicle) {
+		vehicle->stop();
+	}
 	switch(evt.key) {
 		case OIS::KC_ESCAPE: destroyScene(); exit(0);
-		case OIS::KC_0:
-			delete vehicle;
-			vehicle = new TankEntity(cameraNode);
-			break;
+		case OIS::KC_1:	glider->attachVehicle(); vehicle = glider; break;
+		case OIS::KC_2:	tank->attachVehicle(); vehicle = tank; break;
 	}
 	return true;
 }

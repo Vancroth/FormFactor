@@ -17,6 +17,12 @@ namespace FormFactor {
 	}
 
 	Vector Primitive::calculateVehicleCollision(Vector &v, const Vector &vel, float mass, const Vector &dir) {
+		//float newX = (abs(dir.x) == 1 ? (-v.x * .8) : v.x);
+		//float newY = (abs(dir.y) == 1 ? (-v.y * .8) : v.y);
+		//float newZ = (abs(dir.z) == 1 ? (-v.z * .8) : v.z);
+
+		//return Vector(newX, newY, newZ);
+
 		if(dir.y == -1) { // on top of platform
 			float newX = (abs(v.x) > .001 ? v.x : vel.x);	// replace z coordinate
 			float newZ = vel.z + v.z;						// Add z coordinate

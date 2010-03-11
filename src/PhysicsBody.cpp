@@ -2,7 +2,7 @@
 
 namespace FormFactor {
 
-	const Force PhysicsBody::gravity = Force(Vector(0, -300.0f, 0));
+	const Force PhysicsBody::gravity = Force(Vector(0, -1.8f, 0));
 	std::vector<Reference<PhysicsBody> > PhysicsBody::bodies;
 	Reference<KdTree> PhysicsBody::tree;
 
@@ -59,7 +59,7 @@ namespace FormFactor {
 		for(unsigned int i = 0; i < bodies.size(); i++) {
 			if(bodies[i]->inactive) continue;
 			// Add forces
-			Vector totalForce = gravity.force * bodies[i]->gravityOn;
+			Vector totalForce = gravity.force * bodies[i]->mass * bodies[i]->gravityOn;
 			for(unsigned int j = 0; j < bodies[i]->forces.size(); j++)
 				totalForce += bodies[i]->forces[j].force;
 

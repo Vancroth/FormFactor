@@ -8,7 +8,7 @@ using namespace Ogre;
 class TankEntity : public VehicleEntity
 {
 public:
-	TankEntity(SceneNode *node);
+	TankEntity(SceneNode *cNode, SceneNode *vNode);
 	~TankEntity(void);
 
 	virtual bool keyPressed(const OIS::KeyEvent &evt);
@@ -20,4 +20,6 @@ public:
 	virtual void deactivateSecondary();
 
 	virtual void collideWithLevelTile(FormFactor::LevelTileEntity *levelEntity);
+protected:
+	bool lavaShieldEnabled;
 };

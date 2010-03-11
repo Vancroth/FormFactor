@@ -118,8 +118,8 @@ bool LevelTileEntity::intersects(Reference<Primitive> &test, std::vector<Referen
 }
 
 Vector LevelTileEntity::handleVehicleCollision(const Vector &vel, float mass, const Vector &dir) {
-	//VehicleEntity *vehicle = VehicleEntity::getSingletonPtr();
-	//vehicle->collideWithLevelTile(this);
+	VehicleEntity *vehicle = VehicleEntity::getSingletonPtr();
+	vehicle->collideWithLevelTile(this);
 
 	Vector v = getVelocity(); 
 	return Primitive::calculateVehicleCollision(v, vel, mass, dir);

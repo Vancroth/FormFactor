@@ -19,7 +19,7 @@ namespace FormFactor {
 	public:
 		Primitive() {}
 
-		Primitive(Ogre::SceneNode *node) : GameEntity(node) {coefficientOfFriction = .3f;}
+		Primitive(Ogre::SceneNode *node) : GameEntity(node) {coefficientOfFriction = .3f; damping = .8f; }
 
 		/*
 		 * Return the primitive's bounding box in world coordinates.
@@ -49,7 +49,7 @@ namespace FormFactor {
 		 */
 		virtual bool intersects(Reference<Primitive> &other, std::vector<Reference<Primitive> > &objsHit, bool sameTest = false) const = 0;
 
-		static Vector calculateVehicleCollision(Vector &v, const Vector &vel, float mass, const Vector &dir);
+		static Vector calculateVehicleCollision(Vector &objVel, const Vector &vehVel, float mass, const Vector &dir);
 		virtual Vector handleVehicleCollision(const Vector &vel, float mass, const Vector &dir);
 		virtual Vector handleParticleCollision(const Vector &vel, float mass, const Vector &dir);
 
@@ -80,6 +80,7 @@ namespace FormFactor {
 	protected:
 
 		float coefficientOfFriction;	// kinetic friction coefficient. Subclasses should set this if they don't want the default
+		float damping;					// Measures the amount of energy lost when colliding with a surface
 
 	private:
 	};

@@ -8,7 +8,7 @@ using namespace Ogre;
 class GliderEntity : public VehicleEntity
 {
 public:
-	GliderEntity(SceneNode *node);
+	GliderEntity(SceneNode *cNode, SceneNode *vNode);
 	~GliderEntity(void);
 
 	virtual bool keyPressed(const OIS::KeyEvent &evt);
@@ -20,4 +20,8 @@ public:
 	virtual void deactivateSecondary();
 
 	virtual void collideWithLevelTile(FormFactor::LevelTileEntity *levelEntity);
+
+protected:
+	float moveSpeed;
+
 };

@@ -1,13 +1,11 @@
 #include "GliderEntity.h"
 
-GliderEntity::GliderEntity(SceneNode *node) : VehicleEntity(node, String("Glider"), String("scout.mesh"))
+GliderEntity::GliderEntity(SceneNode *cNode, SceneNode *vNode) : VehicleEntity(cNode, vNode, String("Glider"), String("scout.mesh"))
 {
 	curMode = GLIDER;
 
-	vehicleNode->setDirection(0, 0, 1);
-
-	primary.init(.5, 5);
-	secondary.init(1, 5);
+	primary.init(1, 5);
+	secondary.init(3, 5);
 }
 
 GliderEntity::~GliderEntity(void)

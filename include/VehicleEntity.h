@@ -10,7 +10,7 @@ using namespace Ogre;
 class VehicleEntity : public FormFactor::PhysicsBody
 {
 public: 
-	enum VehicleMode { NONE, GLIDER, TANK };
+	enum VehicleMode { GLIDER, TANK };
 
 	// Holds state information about an ability
 	struct VehicleAbility {
@@ -26,7 +26,7 @@ public:
 			duration = 0;
 		}
 
-		void init(float maxCD, float maxD) {
+		void init(float maxD, float maxCD) {
 			maxCooldown = maxCD;
 			maxDuration = maxD;
 			activated = false;
@@ -36,8 +36,8 @@ public:
 
 		bool updateState(float timeElapsed) {
 			bool wasActivated = activated;
-			cooldown = (cooldown - timeElapsed > 0 ? cooldown - timeElapsed : 0);
-			duration = (duration - timeElapsed > 0 ? cooldown - timeElapsed : 0);
+			cooldown = (cooldown - timeElapsed > 0 ? (cooldown - timeElapsed) : 0);
+			duration = (duration - timeElapsed > 0 ? (duration - timeElapsed) : 0);
 			if (wasActivated && duration == 0.0f) {
 				activated = false;
 				return true;
@@ -57,7 +57,9 @@ public:
 	static VehicleEntity* VehicleEntity::getSingletonPtr(void);
 	static void VehicleEntity::setSingletonPtr(VehicleEntity *entity);
 
-	VehicleEntity(SceneNode *node, String &name, String &mesh); 
+	void attachVehicle();
+
+	VehicleEntity(SceneNode *cNode, SceneNode *vNode, String &name, String &mesh); 
 	virtual ~VehicleEntity(); 
 
 	virtual bool frameEvent(const FrameEvent &evt);
@@ -93,15 +95,8 @@ public:
 protected:
 	Entity *vehicleEntity;
 
-	float moveSpeed;
-
-	float xVelocity;
 	float xAcceleration;
-
-	float yVelocity;
 	float yAcceleration;
-
-	float zVelocity;
 	float zAcceleration;
 
 	bool onGround;

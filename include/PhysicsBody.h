@@ -34,7 +34,6 @@ namespace FormFactor {
 		PhysicsBody();
 		PhysicsBody(Ogre::SceneNode *node, bool collides = true, float m = 0, const Vector &v  = Vector(0.f, 0.f, 0.f));
 
-
 		void setMass(float m);
 		void setPosition(const Point &p);
 		void setVelocity(const Vector &v);
@@ -87,7 +86,6 @@ namespace FormFactor {
 		 * Run an iteration of the simulation
 		 */
 		static void simulatePhysics(int timeElapse);
-
 
 		static const Force gravity;
 

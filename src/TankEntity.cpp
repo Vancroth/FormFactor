@@ -1,10 +1,10 @@
 #include "TankEntity.h"
 
-TankEntity::TankEntity(SceneNode *node) : VehicleEntity(node, String("Tank"), String("scout.mesh"))
+TankEntity::TankEntity(SceneNode *cNode, SceneNode *vNode) : VehicleEntity(cNode, vNode, String("Tank"), String("tank.mesh"))
 {
 	curMode = TANK;
 
-	vehicleNode->setDirection(0, 0, 1);
+	lavaShieldEnabled = false;
 
 	primary.init(5, 10);
 	secondary.init(5, 10);
@@ -26,9 +26,11 @@ bool TankEntity::keyPressed(const OIS::KeyEvent &evt) {
  * Returns TRUE if the ability is activated successfully, FALSE otherwise
  */
 void TankEntity::activatePrimary() {
+	lavaShieldEnabled = true;
 }
 
 void TankEntity::deactivatePrimary() {
+	lavaShieldEnabled = false;
 }
 
 /**
@@ -42,6 +44,8 @@ void TankEntity::deactivateSecondary() {
 
 void TankEntity::collideWithLevelTile(FormFactor::LevelTileEntity *levelEntity) {
 	switch (levelEntity->getTerrainType()) {
-		case FormFactor::LevelTileEntity::LAVA: break;
+		case FormFactor::LevelTileEntity::LAVA: 
+			//if (!lavaShieldEnabled) stop();
+			break;
 	}
 }
