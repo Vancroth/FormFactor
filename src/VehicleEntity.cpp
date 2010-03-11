@@ -2,7 +2,7 @@
 #include "GliderEntity.h"
 #include "SmokeEmitter.h"
 
-const FormFactor::Vector VehicleEntity::thrust = FormFactor::Vector(0, 0, -100);
+const FormFactor::Vector VehicleEntity::thrust = FormFactor::Vector(0, 0, -50);
 VehicleEntity* VehicleEntity::vehicle = NULL;
 
 VehicleEntity* VehicleEntity::getSingletonPtr(void) {
@@ -13,7 +13,7 @@ void VehicleEntity::setSingletonPtr(VehicleEntity *entity) {
 	vehicle = entity;
 }
 
-VehicleEntity::VehicleEntity(SceneNode *cNode, SceneNode *vNode, String &name, String &mesh) : FormFactor::PhysicsBody(cNode, true, 500) {
+VehicleEntity::VehicleEntity(SceneNode *cNode, SceneNode *vNode, String &name, String &mesh) : FormFactor::PhysicsBody(vNode, true, 500) {
 	cameraNode = cNode;
 	vehicleNode = vNode;
 
@@ -26,7 +26,6 @@ VehicleEntity::VehicleEntity(SceneNode *cNode, SceneNode *vNode, String &name, S
 	curRoll = 0;
 
 	onGround = false;
-	clearPhysicsState();
 
 	// Add smoke emitter
 	float sideDist = worldBound().getMaxPoint()[0] - worldBound().getOrigin()[0];
@@ -40,9 +39,16 @@ VehicleEntity::~VehicleEntity() {
 
 void VehicleEntity::attachVehicle() {
 	VehicleEntity::setSingletonPtr(this);
-	vehicleNode->detachAllObjects();
+	//vehicleNode->detachAllObjects();
 	vehicleNode->attachObject(vehicleEntity);
+	clearPhysicsState();
 	start();
+}
+
+void VehicleEntity::detachVehicle() {
+	vehicleNode->detachObject(vehicleEntity);
+	clearPhysicsState();
+	stop();
 }
 
 Entity *VehicleEntity::getEntity() {
@@ -137,16 +143,6 @@ bool VehicleEntity::intersects(FormFactor::Reference<Primitive> &other, std::vec
 void VehicleEntity::handleCollision(FormFactor::Reference<FormFactor::Primitive> &objHit, const FormFactor::Vector &dir) {
 	if(!onGround && dir.y==-1) {
 		onGround = true;
-	}
-	this->coefficientOfFriction = objHit->getCoefficientOfFriction();
-	FormFactor::Vector newVel = objHit->handleVehicleCollision(this->vel, this->mass, dir);
-	this->setVelocity(newVel);
-}
-
-void VehicleEntity::clearPhysicsState() {
-	this->clearForces();
-	this->addForce(thrust);
-	if (onGround) {
 		FormFactor::Vector N = -FormFactor::PhysicsBody::gravity.force * mass;
 
 		// Normal force
@@ -155,13 +151,24 @@ void VehicleEntity::clearPhysicsState() {
 		// Friction force
 		float magOfN = N.length();
 		FormFactor::Vector negVel = -getVelocity(); negVel.y = 0; negVel.normalize();
-		this->addForce(negVel * magOfN * this->getCoefficientOfFriction());
+		this->addForce(negVel * magOfN * objHit->getCoefficientOfFriction());
+	} else {
+		int i = 0;
 	}
+
+	FormFactor::Vector newVel = objHit->handleVehicleCollision(this->vel, this->mass, dir);
+	this->setVelocity(newVel);
+}
+
+void VehicleEntity::clearPhysicsState() {
+	this->clearForces();
+	this->addForce(thrust);
 	onGround = false;
 }
 	
 void VehicleEntity::updateGraphicalPosition(const FormFactor::Vector &shiftAmt) {
-	mNode->translate(shiftAmt.getOgreVector());
+	vehicleNode->translate(shiftAmt.getOgreVector());
+	cameraNode->translate(shiftAmt.getOgreVector());
 }
 
 

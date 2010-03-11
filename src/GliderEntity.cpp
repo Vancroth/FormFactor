@@ -5,11 +5,12 @@ GliderEntity::GliderEntity(SceneNode *cNode, SceneNode *vNode) : VehicleEntity(c
 	curMode = GLIDER;
 
 	primary.init(1, 5);
-	secondary.init(3, 5);
+	secondary.init(2, 5);
 }
 
 GliderEntity::~GliderEntity(void)
 {
+	mNode->detachObject(vehicleEntity);
 	mSceneMgr->destroyEntity(vehicleEntity);
 }
 

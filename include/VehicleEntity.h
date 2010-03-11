@@ -58,6 +58,7 @@ public:
 	static void VehicleEntity::setSingletonPtr(VehicleEntity *entity);
 
 	void attachVehicle();
+	void detachVehicle();
 
 	VehicleEntity(SceneNode *cNode, SceneNode *vNode, String &name, String &mesh); 
 	virtual ~VehicleEntity(); 

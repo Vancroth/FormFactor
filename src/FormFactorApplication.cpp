@@ -46,7 +46,7 @@ void FormFactorApplication::createScene()
 
 	std::vector<FormFactor::Reference<FormFactor::Primitive> > primitives;
 
-	SceneNode *vehicleNode = cameraNode->createChildSceneNode("Player", Vector3(0, -5, -100));
+	SceneNode *vehicleNode = cameraNode->createChildSceneNode("Player", Vector3(0, 0, -100));
 
 	// Create the player
 	glider = new GliderEntity(cameraNode, vehicleNode);
@@ -57,10 +57,10 @@ void FormFactorApplication::createScene()
 	vehicleNode->showBoundingBox(true);
 
 	// Create other vehicles that we'll need
-	tank = new TankEntity(cameraNode, vehicleNode);
+	//tank = new TankEntity(cameraNode, vehicleNode);
 
 	// Create the level
-	SceneNode *levelNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("Level", Vector3(0, sceneShift-40, 0));
+	SceneNode *levelNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("Level", Vector3(0, sceneShift-30, 0));
 	FormFactor::LevelEntity *level = new FormFactor::LevelEntity(levelNode, primitives);
 	
 	// Build main collision tree
@@ -84,13 +84,19 @@ bool FormFactorApplication::frameStarted(const FrameEvent& evt)
 //-------------------------------------------------------------------------------------
 bool FormFactorApplication::keyPressed(const OIS::KeyEvent &evt)
 {
-	if (vehicle) {
-		vehicle->stop();
-	}
+	//if (vehicle) {
+	//	vehicle->stop();
+	//}
 	switch(evt.key) {
 		case OIS::KC_ESCAPE: destroyScene(); exit(0);
-		case OIS::KC_1:	glider->attachVehicle(); vehicle = glider; break;
-		case OIS::KC_2:	tank->attachVehicle(); vehicle = tank; break;
+		case OIS::KC_1:
+			vehicle->detachVehicle();
+			glider->attachVehicle();
+			vehicle = glider; break;
+		case OIS::KC_2:
+			vehicle->detachVehicle();
+			tank->attachVehicle();
+			vehicle = tank; break;
 	}
 	return true;
 }

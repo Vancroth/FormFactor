@@ -4,8 +4,8 @@
 #include "VehicleEntity.h"
 
 namespace FormFactor {
-	const unsigned int LevelTileEntity::TILE_WIDTH =  200;
-	const unsigned int LevelTileEntity::TILE_HEIGHT = 200;
+	const unsigned int LevelTileEntity::TILE_WIDTH =  100;
+	const unsigned int LevelTileEntity::TILE_HEIGHT = 100;
 
 	char* terrains[] = {"Examples/GrassFloor", "Examples/BeachStones", "LevelTiles/Lava"};
 

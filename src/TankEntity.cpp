@@ -12,6 +12,7 @@ TankEntity::TankEntity(SceneNode *cNode, SceneNode *vNode) : VehicleEntity(cNode
 
 TankEntity::~TankEntity(void)
 {
+	mNode->detachObject(vehicleEntity);
 	mSceneMgr->destroyEntity(vehicleEntity);
 }
 
