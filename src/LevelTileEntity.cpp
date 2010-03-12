@@ -21,12 +21,19 @@ LevelTileEntity::LevelTileEntity(SceneNode *node, Reference<LevelEntity> l, unsi
 		
 	makeRoom(node, prims, terrain);
 
-
 	char buf[60]; sprintf(buf, "Platform-%d", id);
 	SceneNode *platformNode = node->createChildSceneNode(buf, Vector3(20, 20, 0));
 	MovingPlatform *platform = new MovingPlatform(platformNode, terrain, Point(0, 0, 30), 2.f, PlaneDirection::negZ, 10, 10);
 	platform->start();
 	prims.push_back(platform);
+
+	std::vector<Point> pts;
+	pts.push_back(Point(-50, 0, 0));  pts.push_back(Point(0, 50, -50)); 
+	memset(buf, 0, 60); sprintf(buf, "PowerUp-%d", id);
+	SceneNode *powerNode = node->createChildSceneNode(buf, Vector3(20, 0, -100));
+	PowerUp *powerUp = new PowerUp(powerNode, pts, 30.f);
+	powerUp->start();
+	prims.push_back(powerUp);
 
 	// Make bounding box encompass all prims
 	for(unsigned int i = 0; i < prims.size(); i++)
@@ -49,8 +56,8 @@ void LevelTileEntity::makeRoom(SceneNode *node, std::vector<Reference<Primitive>
 
 	memset(buf, 0, 60); sprintf(buf, "Volcano-%d", id);
 	SceneNode *rampNode = groundNode->createChildSceneNode(buf, Vector3(0, 0, 30));
-	FireEmitter *volc = new FireEmitter(groundNode, Vector(0, 1, 0), terrain);
-	//LaunchPad *volc = new LaunchPad(rampNode, Vector(0, 0, -1), 30, terrain);
+	//FireEmitter *volc = new FireEmitter(groundNode, Vector(0, 1, 0), terrain);
+	LaunchPad *volc = new LaunchPad(rampNode, Vector(0, 0, -1), 30, terrain);
 	volc->start();
 	prims.push_back(volc);
 

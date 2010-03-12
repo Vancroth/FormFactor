@@ -22,15 +22,16 @@ FormFactorApplication::~FormFactorApplication()
 //-------------------------------------------------------------------------------------
 void FormFactorApplication::createScene()
 {
-	mSceneMgr->setAmbientLight(ColourValue(0.25, 0.25, 0.25));
+	//mSceneMgr->setAmbientLight(ColourValue(0.25, 0.25, 0.25));
+	mSceneMgr->setAmbientLight(ColourValue(0.f, 0.f, 0.f));
 
 	Light *light = mSceneMgr->createLight("Light1");
 	light->setType(Light::LT_POINT);
-	light->setPosition(Vector3(250, 150, 250));
 	light->setDiffuseColour(ColourValue::White);
 	light->setSpecularColour(ColourValue::White);
 
 	mSceneMgr->setSkyDome(true, "Examples/CloudySky", 5, 8);
+	//mSceneMgr->setShadowTechnique(SHADOWTYPE_STENCIL_ADDITIVE);
 	//mSceneMgr->setWorldGeometry("terrain.cfg");
 
 	std::vector<FormFactor::Reference<FormFactor::Primitive> > primitives;
@@ -45,6 +46,7 @@ void FormFactorApplication::createScene()
 
 	SceneNode *cameraNode = playerNode->createChildSceneNode("PlayerCamera", Vector3(0, 0, -50));
 	cameraNode->attachObject(mCamera);
+	cameraNode->attachObject(light);
 
 	// Create the level
 	SceneNode *levelNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("Level", Vector3(0, sceneShift-25, 0));

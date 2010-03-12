@@ -2,7 +2,7 @@
 
 namespace FormFactor {
 const unsigned int SmokeEmitter::numSmokeParticles = 300;
-const unsigned int SmokeEmitter::nSmokeEmits = 40;
+const unsigned int SmokeEmitter::nSmokeEmits = 30;
 const unsigned int SmokeEmitter::smokeEmitVar = 10;
 const unsigned int SmokeEmitter::smokeLife = 4;
 const unsigned int SmokeEmitter::smokeLifeVar = 3;
