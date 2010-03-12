@@ -23,7 +23,7 @@ PowerUp::PowerUp(Ogre::SceneNode *node, std::vector<Point> &points, float speed)
 	
 	points.push_back(Point(0, 0, 0));
 	dest = 0;
-	direction = poinst[dest] - Point(0, 0, 0);
+	direction = points[dest] - Point(0, 0, 0);
 	distance = direction.normalize();
 
 }
@@ -33,9 +33,6 @@ PowerUp::~PowerUp() {
 	mSceneMgr->destroyEntity(powerUp);
 }
 
-bool PowerUp::frameEvent(const Ogre::FrameEvent &evt) {
-	return true;
-}
 
 bool PowerUp::frameStarted(const FrameEvent& evt) {
 	float move = speed * evt.timeSinceLastFrame;
@@ -45,7 +42,7 @@ bool PowerUp::frameStarted(const FrameEvent& evt) {
 		mNode->setPosition(points[dest].getOgrePoint());
 		int startLoc = dest;
 		dest = (dest++) % points.size();
-		direction = poinst[dest] - points[startLoc];
+		direction = points[dest] - points[startLoc];
 		distance = direction.normalize();
 	} else {
 		Vector dir = direction * move;
