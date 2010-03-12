@@ -1,0 +1,31 @@
+material LevelTiles/Normal
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture BumpyMetal.jpg
+				scale 0.5 0.5
+			}
+
+		}
+	}
+}
+
+material LevelTiles/Lava
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture Lava.jpg
+				scale 0.5 0.5
+			}
+
+		}
+	}
+}

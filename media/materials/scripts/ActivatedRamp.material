@@ -1,0 +1,51 @@
+material ActivatedRamp/Lava
+{
+	technique
+	{
+		pass
+		{
+			specular 0.5 0.5 0.5 1.0
+			
+			texture_unit
+			{
+				texture Lava.jpg
+				scale 0.5 0.5
+			}
+
+		}
+	}
+}
+
+material ActivatedRamp/GrassFloor
+{
+	technique
+	{
+		pass
+		{
+			specular 0.5 0.5 0.5 1.0
+
+			texture_unit
+			{
+				texture grass_1024.jpg
+			}
+
+		}
+	}
+}
+
+material ActivatedRamp/BeachStones
+{
+	technique
+	{
+		pass
+		{
+			specular 0.5 0.5 0.5 1.0
+
+			texture_unit
+			{
+				texture BeachStones.jpg
+			}
+
+		}
+	}
+}
