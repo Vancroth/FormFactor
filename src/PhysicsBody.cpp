@@ -4,9 +4,12 @@ namespace FormFactor {
 
 	const Force PhysicsBody::gravity = Force(Vector(0, -1.8f, 0));
 	std::vector<Reference<PhysicsBody> > PhysicsBody::bodies;
+	unsigned int PhysicsBody::reservedCapacity = 500;
+	unsigned int PhysicsBody::timeTillNextErase = 50;
 	Reference<KdTree> PhysicsBody::tree;
 
-	PhysicsBody::PhysicsBody(Ogre::SceneNode *node, bool collides, float m, const Vector &v) : Primitive(node) {
+	PhysicsBody::PhysicsBody(Ogre::SceneNode *node, bool collides, float m, bool frame, bool input, const Vector &v) : Primitive(node, frame, input) {
+
 		canCollide = collides;
 		mass = m;
 		massInv = 1.f/mass;
@@ -17,6 +20,11 @@ namespace FormFactor {
 		inactive = false;
 
 		setPosition(getPosFromSceneNode(node));
+
+		if(bodies.capacity() > 3*reservedCapacity/4) {
+			bodies.reserve(reservedCapacity);
+			reservedCapacity *= 2;
+		}
 		
 		bodies.push_back(this);
 	}
@@ -57,9 +65,11 @@ namespace FormFactor {
 	void PhysicsBody::simulatePhysics(int timeElapseMS) {
 		timeElapseMS = (timeElapseMS==0 ? 1 : timeElapseMS);
 		float timeElapse = .005 * timeElapseMS;
+		float cameraZ = bodies[0]->mSceneMgr->getCamera("PlayerCam")->getRealPosition().z;
 
 		for(unsigned int i = 0; i < bodies.size(); i++) {
-			if(bodies[i]->inactive) continue;
+			if(!bodies[i] || bodies[i]->inactive || bodies[i]->isOffScreen(cameraZ)) continue;
+
 			// Add forces
 			Vector totalForce = gravity.force * bodies[i]->mass * bodies[i]->gravityOn;
 			for(unsigned int j = 0; j < bodies[i]->forces.size(); j++)
@@ -83,8 +93,16 @@ namespace FormFactor {
 
 		// Check for/Handle collisions
 		for(unsigned int i = 0; i < bodies.size(); i++) {
+			if(i!=0) {
+				if(!bodies[i]) {						// passed it
+					continue;
+				} else if(bodies[i]->nReferences==1) {	// last reference
+					bodies[i] = NULL;
+					continue;
+				}
+			}
 			bodies[i]->clearPhysicsState();
-			if(!bodies[i]->doesCollision() || bodies[i]->inactive) continue;
+			if(!bodies[i]->doesCollision() || bodies[i]->inactive || bodies[i]->isOffScreen(cameraZ)) continue;
 			std::vector<Reference<Primitive> > objsHit;
 			Reference<Primitive> temp = bodies[i].getPtr();
 			
@@ -113,6 +131,14 @@ namespace FormFactor {
 				bodies[i]->updateGraphicalPosition(shiftAmt);		// update pos
 				bodies[i]->pos += shiftAmt;
 			}
+		}
+
+		// Clear null pointers
+		if(--timeTillNextErase == 0) {
+			timeTillNextErase = 10;
+			std::sort(bodies.begin()+1, bodies.end(), std::greater<Reference<PhysicsBody> >());
+			std::vector<Reference<PhysicsBody>>::iterator it = std::find(bodies.begin()+1, bodies.end(), NULL);
+			bodies.erase(it, bodies.end());
 		}
 	}
 

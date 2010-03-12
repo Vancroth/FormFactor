@@ -11,18 +11,25 @@ class GameEntity : public FrameListener, public OIS::KeyListener, public OIS::Mo
 public:
 	GameEntity() {mNode = NULL;}
 
-	GameEntity(SceneNode *node) {
-		Root::getSingletonPtr()->addFrameListener(this);
+	GameEntity(SceneNode *node, bool frame=false, bool input=false) {
+		frameListen = frame;
+		inputListen = input;
+		if(frame)Root::getSingletonPtr()->addFrameListener(this);
 		mSceneMgr = Root::getSingletonPtr()->getSceneManager("Default");
 		mNode = node;
-		InputController::getSingletonPtr()->addKeyListener(this);
-		InputController::getSingletonPtr()->addMouseListener(this);
+
+		if(input) {
+			InputController::getSingletonPtr()->addKeyListener(this);
+			InputController::getSingletonPtr()->addMouseListener(this);
+		}
 	}
 
 	virtual ~GameEntity(void) {
-		Root::getSingletonPtr()->removeFrameListener(this);
-		InputController::getSingletonPtr()->removeKeyListener(this);
-		InputController::getSingletonPtr()->removeMouseListener(this);
+		if(frameListen) Root::getSingletonPtr()->removeFrameListener(this);
+		if(inputListen) {
+			InputController::getSingletonPtr()->removeKeyListener(this);
+			InputController::getSingletonPtr()->removeMouseListener(this);
+		}
 	}
 
 	virtual void start() {
@@ -70,4 +77,6 @@ protected:
 	bool started;
 	SceneManager *mSceneMgr;
 	SceneNode *mNode;
+private:
+	bool frameListen, inputListen;
 };

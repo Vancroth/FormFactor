@@ -12,6 +12,8 @@ class FireEmitter : public ParticleEmitter {
 
 public: 
 	FireEmitter(Ogre::SceneNode *node, const Vector &d, char *terrain); 
+	virtual ~FireEmitter();
+
 	void setDirection(const Vector &d) {dir = d; dir.normalize();}
 
 protected:	

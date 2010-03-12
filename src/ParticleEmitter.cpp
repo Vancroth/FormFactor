@@ -16,18 +16,22 @@ ParticleEmitter::ParticleEmitter(Ogre::SceneNode *node, unsigned int maxNumParti
 	lifeVariance = lifeVar;
 
 	id = numParticleEmitters++;
+	firstTimeOnScreen = true;
 
 	emittedParticles = 0;
+	strcpy(material, matName);
+
+	particles = NULL;
 	
-	particles = new ParticleInfo[maxNumParticles];
+	/*particles = new ParticleInfo[maxNumParticles];
 	for(unsigned int i = 0; i < maxNumParticles; i++) {
 		particles[i].p = new Particle(node->createChildSceneNode(), matName);
 		deadParticles.push_back(i);
-	}
+	}*/
 }
 
 ParticleEmitter::~ParticleEmitter() {
-	delete[] particles;
+	if(particles) delete[] particles;
 }
 
 unsigned int ParticleEmitter::getNumParticlesToEmit(float timeElapsed) {
@@ -41,13 +45,26 @@ unsigned int ParticleEmitter::getNumParticlesToEmit(float timeElapsed) {
 }
 
 void ParticleEmitter::emitParticles(float timeElapsed) {
+	float cameraZ = mSceneMgr->getCamera("PlayerCam")->getRealPosition().z;
+	if(cameraZ < pos.z || cameraZ > pos.z + 500.f) return;	// only update while on screen; 
+
+	// Allocate particles on demand
+	if(firstTimeOnScreen) {
+		firstTimeOnScreen = false;	
+		particles = new ParticleInfo[maxParticles];
+		deadParticles.resize(maxParticles);
+		for(unsigned int i = 0; i < maxParticles; i++) {
+			particles[i].p = new Particle(mNode->createChildSceneNode(), material);
+			deadParticles[i] = i;
+		}
+	}
+
 	updatePosition();
 
 	// Update old particles
 	for(unsigned int i = 0; i < maxParticles; i++) {
 		if(!particles[i].active) continue;
 
-		float cameraZ = mSceneMgr->getCamera("PlayerCam")->getRealPosition().z;
 		bool died = particles[i].p->update(timeElapsed, cameraZ);
 		if(died) {
 			emittedParticles--;

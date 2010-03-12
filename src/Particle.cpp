@@ -5,18 +5,20 @@ namespace FormFactor {
 unsigned int Particle::numParticles = 0;
 
 Particle::Particle(Ogre::SceneNode *node, char *matName) : PhysicsBody(node) {
+
 	inactive = true;
 	canCollide = false;
 
 	char buf[60]; sprintf(buf, "Particle%d", numParticles++);
 	particle = mSceneMgr->createBillboardSet(buf, 1);
 	particle->setMaterialName(matName);
-	particle->setCastShadows(true);
+	//particle->setCastShadows(true);
 	Ogre::Billboard *particleBillboard = particle->createBillboard(Vector3(0, 0, 0));
 	mNode->attachObject(particle);
 }
 
 Particle::~Particle() {
+	mNode->detachAllObjects();
 	mSceneMgr->destroyBillboardSet(particle);
 }
 
@@ -25,12 +27,13 @@ void Particle::initParticle(unsigned int l, const Point &p, const Vector &v, flo
 		this->setPosition(p);
 		this->setMass(m);
 		this->setVelocity(v);
-		dim = newDim;
-		dimDelta = newDimDelta;
-		color = newColor;
+
+		particle->getBillboard(0)->setColour(Ogre::ColourValue(newColor.x, newColor.y, newColor.z, newAlpha));
+		particle->getBillboard(0)->setDimensions(newDim[0], newDim[1]);
+
 		colorDelta = newColorDelta;
-		alpha = newAlpha;
-		alphaDelta = newAlphaDelta;
+		dimDelta = newDimDelta;
+		dimDelta[2] = newAlphaDelta;
 		life = l;
 		inactive = false;
 		this->canCollide = collide;
@@ -43,22 +46,25 @@ bool Particle::update(float timeElapse, float cameraZ) {
 	unsigned int time = (timeElapse > 0 ? int(ceil(timeElapse)) : 1);
 	life -= time;
 
-	bool offscreen = (cameraZ < pos.z || cameraZ > pos.z + 500.f);	// only update while on screen; 
+	bool offscreen = this->isOffScreen(cameraZ);	// only update while on screen; 
 
 	if(life <= 0 || offscreen) {	// dying
 		clearForces();
 		inactive = true;
 		mNode->setPosition(0, 0, 0);		// reset position
-		particle->getBillboard(0)->setColour(Ogre::ColourValue(color.x, color.y, color.z, 0.f));
+		particle->getBillboard(0)->setColour(Ogre::ColourValue(0, 0, 0, 0.f));
 		particle->getBillboard(0)->setDimensions(0.f, 0.f);
 		canCollide = false;
 		return true;
 	} else {
-		color += colorDelta * time;
-		alpha += alphaDelta * time;
-		dim += dimDelta * time;
-		particle->getBillboard(0)->setColour(Ogre::ColourValue(color.x, color.y, color.z, alpha));
-		particle->getBillboard(0)->setDimensions(dim[0], dim[1]);
+		Ogre::ColourValue oldColor = particle->getBillboard(0)->getColour();
+		Ogre::ColourValue color(oldColor.r + colorDelta.x*time, oldColor.g + colorDelta.y*time, oldColor.b + colorDelta.z*time, oldColor.a + dimDelta[2]*time);
+		
+		float width = particle->getBillboard(0)->getOwnWidth() + dimDelta[0] * time;
+		float height = particle->getBillboard(0)->getOwnHeight() + dimDelta[1] * time;
+
+		particle->getBillboard(0)->setColour(color);
+		particle->getBillboard(0)->setDimensions(width, height);
 		return false;
 	}
 }

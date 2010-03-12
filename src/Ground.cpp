@@ -6,6 +6,7 @@ const Ogre::Vector3 Ground::upVector[] = {Vector3::UNIT_Z, Vector3::UNIT_Z, Vect
 const Ogre::Vector3 Ground::planeDir[] = {Vector3::UNIT_X, Vector3::UNIT_Y, Vector3::UNIT_Z, -Vector3::UNIT_X, -Vector3::UNIT_Y, -Vector3::UNIT_Z};
 
 Ground::Ground(Ogre::SceneNode *node, char *matName, int dir, unsigned int tileWidth, unsigned int tileHeight) : Primitive(node) {
+
 	// create a mesh for our ground
 	char buf[60]; sprintf(buf, "ground%d", numGrounds++);
 	MeshManager::getSingleton().createPlane(buf, ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
@@ -21,6 +22,7 @@ Ground::Ground(Ogre::SceneNode *node, char *matName, int dir, unsigned int tileW
 }
 
 Ground::~Ground() {
+	mNode->detachAllObjects();
 	mSceneMgr->destroyEntity(ground);
 }
 

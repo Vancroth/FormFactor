@@ -32,8 +32,8 @@ namespace FormFactor {
 	public:
 
 		PhysicsBody();
-		PhysicsBody(Ogre::SceneNode *node, bool collides = true, float m = 0, const Vector &v  = Vector(0.f, 0.f, 0.f));
-
+		PhysicsBody(Ogre::SceneNode *node, bool collides = true, float m = 0, bool frame=false, bool input=false, const Vector &v  = Vector(0.f, 0.f, 0.f));
+		virtual ~PhysicsBody() {}
 
 		void setMass(float m);
 		void setPosition(const Point &p);
@@ -78,6 +78,11 @@ namespace FormFactor {
 		virtual void updateGraphicalPosition(const Vector &shiftAmt) = 0;
 
 		virtual inline bool doesCollision() {return canCollide;}
+
+		virtual inline bool isOffScreen(float cameraZ) {
+			return (cameraZ < pos.z || cameraZ > pos.z + 500.f);
+		}
+
 		/*
 		 * Set kd-tree to be used for collisions.
 		 */
@@ -107,6 +112,8 @@ namespace FormFactor {
 	private:
 		static std::vector<Reference<PhysicsBody> > bodies;
 		static Reference<KdTree> tree;
+		static unsigned int reservedCapacity;
+		static unsigned int timeTillNextErase;
 
 		static inline Point getPosFromSceneNode(Ogre::SceneNode *node);
 	};

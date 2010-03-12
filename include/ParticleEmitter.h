@@ -79,6 +79,7 @@ protected:
 
 	Point pos;
 	unsigned int id;				// emitter id
+	char material[30];
 
 	static unsigned int numParticleEmitters;
 	
@@ -87,6 +88,7 @@ protected:
 	}
 
 private:
+	bool firstTimeOnScreen;
 
 };
 

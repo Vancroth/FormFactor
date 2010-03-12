@@ -43,7 +43,7 @@ namespace FormFactor {
 		}
 
 		~Reference() {
-			if(ptr && --ptr->nReferences == 0)
+			if(ptr && --(ptr->nReferences) == 0)
 				delete ptr;
 		}
 
@@ -67,6 +67,7 @@ namespace FormFactor {
 		const T* operator->() const {return ptr;}
 		operator bool() const {return ptr!=NULL;}
 		bool operator<(const Reference<T> &other) const {return ptr < other.ptr;}
+		bool operator>(const Reference<T> &other) const {return ptr > other.ptr;}
 
 	private:
 		T *ptr;

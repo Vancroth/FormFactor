@@ -3,11 +3,11 @@
 #include "SmokeEmitter.h"
 
 namespace FormFactor {
-const unsigned int FireEmitter::numFireParticles = 400;
+const unsigned int FireEmitter::numFireParticles = 200;
 const unsigned int FireEmitter::nFireEmits = 50;
 const unsigned int FireEmitter::fireEmitVar = 20;
-const unsigned int FireEmitter::fireLife = 5;
-const unsigned int FireEmitter::fireLifeVar = 3;
+const unsigned int FireEmitter::fireLife = 4;
+const unsigned int FireEmitter::fireLifeVar = 2;
 char* FireEmitter::fireMatName = "Fire";
 
 
@@ -66,6 +66,10 @@ FireEmitter::FireEmitter(Ogre::SceneNode *node, const Vector &d, char *terrain) 
 	mNode->rotate(Ogre::Vector3::UNIT_Y.getRotationTo(dir.getOgreVector()));
 	mNode->attachObject(man);
 
+}
+
+FireEmitter::~FireEmitter() {
+	mNode->detachAllObjects();
 }
 
 void FireEmitter::updatePosition() {

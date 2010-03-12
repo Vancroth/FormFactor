@@ -52,9 +52,8 @@ protected:
 	Ogre::BillboardSet* particle;		// particle is represented as a billboard
 
 	unsigned int life;			// how long the particle lives
-	Vector color, colorDelta;
-	Vector dim, dimDelta;
-	float alpha, alphaDelta;
+	Vector colorDelta;
+	Vector dimDelta;			// 0 = width, 1 = height, 2 = color alpha
 
 private:
 	static unsigned int numParticles;

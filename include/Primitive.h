@@ -21,7 +21,9 @@ namespace FormFactor {
 	public:
 		Primitive() {}
 
-		Primitive(Ogre::SceneNode *node) : GameEntity(node) {coefficientOfFriction = .3f;}
+		Primitive(Ogre::SceneNode *node, bool frame=false, bool input=false) : GameEntity(node, frame, input) {coefficientOfFriction = .3f;}
+
+		virtual ~Primitive() {}
 
 		/*
 		 * Return the primitive's bounding box in world coordinates.

@@ -14,6 +14,7 @@ PowerUp::PowerUp(Ogre::SceneNode *node) : Primitive(node) {
 }
 
 PowerUp::~PowerUp() {
+	mNode->detachAllObjects();
 	mSceneMgr->destroyEntity(powerUp);
 }
 

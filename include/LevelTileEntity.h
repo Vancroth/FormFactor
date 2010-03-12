@@ -17,6 +17,7 @@ public:
 	LevelTileEntity(SceneNode *node, Reference<LevelEntity> l, unsigned int tileID);
 	~LevelTileEntity(void);
 	virtual bool frameEvent(const FrameEvent &evt);
+	virtual bool frameStarted(const Ogre::FrameEvent &evt);
 
 	/*
 	 * Build and destroy a collision accelerator for this tile.

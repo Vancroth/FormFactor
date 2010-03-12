@@ -27,6 +27,7 @@ MovingPlatform::MovingPlatform(Ogre::SceneNode *node, char *matName, const Point
 }
 
 MovingPlatform::~MovingPlatform() {
+	mNode->detachAllObjects();
 	mSceneMgr->destroyEntity(movingPlatform);
 }
 

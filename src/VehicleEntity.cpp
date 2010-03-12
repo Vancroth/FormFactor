@@ -1,9 +1,11 @@
 #include "VehicleEntity.h"
 #include "SmokeEmitter.h"
 
-const FormFactor::Vector VehicleEntity::thrust = FormFactor::Vector(0, 0, 0.f);
+const FormFactor::Vector VehicleEntity::thrust = FormFactor::Vector(0, 0, -100.f);
 
-VehicleEntity::VehicleEntity(SceneNode *node) : FormFactor::PhysicsBody(node, true, 20) {
+VehicleEntity::VehicleEntity(SceneNode *node) : FormFactor::PhysicsBody(node, true, 20, true, true) {
+	InputController::getSingletonPtr()->addKeyListener(this);
+
 	gliderVehicle = mSceneMgr->createEntity("Glider", "scout.mesh");
 	tankVehicle = mSceneMgr->createEntity("Tank", "tank.mesh");
 

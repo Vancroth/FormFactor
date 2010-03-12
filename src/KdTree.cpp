@@ -51,6 +51,11 @@ namespace FormFactor {
 		delete[] prims1;
 	}
 
+	KdTree::~KdTree() {
+		delete[] nodes;
+		delete[] mailboxes;
+	}
+
 	void KdTree::buildTree(unsigned int nodeNum, const BoundingBox &nodeBounds, const std::vector<BoundingBox> primBounds, int *primNums,
 		unsigned int nPrims, unsigned int depth, BoundEdge *edges[3], int *prims0, int *prims1) {
 

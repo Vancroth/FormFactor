@@ -4,12 +4,12 @@
 #include "LevelTilePrims.h"
 
 namespace FormFactor {
-	const unsigned int LevelTileEntity::TILE_WIDTH =  200;
-	const unsigned int LevelTileEntity::TILE_HEIGHT = 200;
+	const unsigned int LevelTileEntity::TILE_WIDTH =  400;
+	const unsigned int LevelTileEntity::TILE_HEIGHT = 400;
 
 	char* terrains[] = {"Examples/GrassFloor", "Examples/BeachStones", "LevelTiles/Lava"};
 
-LevelTileEntity::LevelTileEntity(SceneNode *node, Reference<LevelEntity> l, unsigned int tileID) : Primitive(node)
+LevelTileEntity::LevelTileEntity(SceneNode *node, Reference<LevelEntity> l, unsigned int tileID) : Primitive(node, true)
 {
 	id = tileID;
 	firstIntersect = true;
@@ -49,7 +49,7 @@ void LevelTileEntity::makeRoom(SceneNode *node, std::vector<Reference<Primitive>
 
 	memset(buf, 0, 60); sprintf(buf, "Volcano-%d", id);
 	SceneNode *fireNode = groundNode->createChildSceneNode(buf);
-	FireEmitter *volc = new FireEmitter(fireNode, Vector(0, 11, 0), terrain);
+	FireEmitter *volc = new FireEmitter(fireNode, Vector(0, 1, 0), terrain);
 	volc->start();
 	prims.push_back(volc);
 
@@ -79,11 +79,18 @@ bool LevelTileEntity::frameEvent(const FrameEvent &evt) {
 	return true;
 }
 
+bool LevelTileEntity::frameStarted(const FrameEvent &evt) {
+	bool keepGoing = true;
+	for(unsigned int i = 0; i < prims.size(); i++)
+		keepGoing = keepGoing && prims[i]->frameStarted(evt);
+	return keepGoing;
+}
+
 void LevelTileEntity::buildAccelerator() {
 	tree = new KdTree(prims, 40, 1, .5f, 4, 20);
 
 	// Now tree is built, can clear prims
-	prims.clear();
+	//prims.clear();
 }
 
 void LevelTileEntity::destroyAccelerator() {

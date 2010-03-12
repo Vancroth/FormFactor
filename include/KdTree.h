@@ -92,6 +92,7 @@ namespace FormFactor {
 
 	public:
 		KdTree(const std::vector<Reference<Primitive> > &prims, int icost, int tcost, float ebonus, int maxp, int maxDepth);
+		virtual ~KdTree();
 
 		// Check for intersection with tree
 		bool intersects(Reference<Primitive> &test, std::vector<Reference<Primitive> > &objsHit, bool sameTest=false) const;
