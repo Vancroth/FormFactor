@@ -16,6 +16,10 @@ public:
 
 	void setDirection(const Vector &d) {dir = d; dir.normalize();}
 
+	virtual BoundingBox worldBound() const;
+	virtual bool intersects(Reference<Primitive> &other, std::vector<Reference<Primitive> > &objsHit, bool sameTest=false) const;
+
+
 protected:	
 	// Functions for emitters to override
 	virtual Vector produceInitVelocity() const;
@@ -27,6 +31,7 @@ protected:
 	virtual inline void updatePosition();
 	
 	Vector dir;			// direction fire shoots
+	Ogre::ManualObject *man;
 
 private:
 	static const unsigned int numFireParticles;

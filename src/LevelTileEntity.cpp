@@ -48,7 +48,7 @@ void LevelTileEntity::makeRoom(SceneNode *node, std::vector<Reference<Primitive>
 	prims.push_back(ground);
 
 	memset(buf, 0, 60); sprintf(buf, "Volcano-%d", id);
-	SceneNode *fireNode = groundNode->createChildSceneNode(buf);
+	SceneNode *fireNode = groundNode->createChildSceneNode(buf, Vector3(0, 0, -10));
 	FireEmitter *volc = new FireEmitter(fireNode, Vector(0, 1, 0), terrain);
 	volc->start();
 	prims.push_back(volc);

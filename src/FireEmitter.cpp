@@ -22,7 +22,7 @@ FireEmitter::FireEmitter(Ogre::SceneNode *node, const Vector &d, char *terrain) 
 	float e = 1.f/3.f;
 
 	char buf[60]; sprintf(buf, "FireShooter%d", this->id);
-	Ogre::ManualObject *man = mSceneMgr->createManualObject(buf);
+	man = mSceneMgr->createManualObject(buf);
 	man->begin(terrain);
 	man->position(5, 10, 5); man->normal(a, b, -a); man->textureCoord(1, 1);	// 0
 	man->position(5, 10, -5); man->normal(a, b, a); man->textureCoord(1, 0);
@@ -71,6 +71,25 @@ FireEmitter::FireEmitter(Ogre::SceneNode *node, const Vector &d, char *terrain) 
 FireEmitter::~FireEmitter() {
 	mNode->detachAllObjects();
 }
+
+BoundingBox FireEmitter::worldBound() const {
+	BoundingBox box(man->getWorldBoundingBox(true));
+	return box.getExpanded(dir * 15.f);
+}
+
+bool FireEmitter::intersects(Reference<Primitive> &other, std::vector<Reference<Primitive> > &objsHit, bool sameTest) const {
+	objsHit.push_back(const_cast<FireEmitter*>(this));
+	if(other->canIntersect()) {
+		return worldBound().intersects(other->worldBound());
+	} else {
+		std::vector<FormFactor::Reference<FormFactor::Primitive> > refined;
+		other->fullyRefine(refined);
+		for(unsigned int i = 0; i < refined.size(); i++) 
+			if(worldBound().intersects(refined[i]->worldBound())) return true;
+		return false;
+	}
+}
+
 
 void FireEmitter::updatePosition() {
 	// Update position

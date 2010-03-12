@@ -1,7 +1,7 @@
 #include "VehicleEntity.h"
 #include "SmokeEmitter.h"
 
-const FormFactor::Vector VehicleEntity::thrust = FormFactor::Vector(0, 0, -100.f);
+const FormFactor::Vector VehicleEntity::thrust = FormFactor::Vector(0, 0, -20.f);
 
 VehicleEntity::VehicleEntity(SceneNode *node) : FormFactor::PhysicsBody(node, true, 20, true, true) {
 	InputController::getSingletonPtr()->addKeyListener(this);
@@ -9,8 +9,8 @@ VehicleEntity::VehicleEntity(SceneNode *node) : FormFactor::PhysicsBody(node, tr
 	gliderVehicle = mSceneMgr->createEntity("Glider", "scout.mesh");
 	tankVehicle = mSceneMgr->createEntity("Tank", "tank.mesh");
 
-	primaryCooldown = 5;
-	secondaryCooldown = 10;
+	primaryCooldown = 0;
+	secondaryCooldown = 0;
 
 	curRoll = 0;
 
@@ -34,8 +34,8 @@ VehicleEntity::~VehicleEntity() {
 }
 
 bool VehicleEntity::frameEvent(const FrameEvent &evt) {
-	curPrimaryCooldown -= evt.timeSinceLastEvent;
-	curSecondaryCooldown -= evt.timeSinceLastEvent;
+	curPrimaryCooldown -= (evt.timeSinceLastEvent > 0 ? evt.timeSinceLastEvent : evt.timeSinceLastEvent);
+	curSecondaryCooldown -= (evt.timeSinceLastEvent > 0 ? evt.timeSinceLastEvent : evt.timeSinceLastEvent);
 	return true;
 }
 
