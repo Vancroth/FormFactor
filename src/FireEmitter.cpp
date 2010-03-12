@@ -23,6 +23,7 @@ FireEmitter::FireEmitter(Ogre::SceneNode *node, const Vector &d, char *terrain) 
 
 	char buf[60]; sprintf(buf, "FireShooter%d", this->id);
 	man = mSceneMgr->createManualObject(buf);
+	man->setCastShadows(true);
 	man->begin(terrain);
 	man->position(5, 10, 5); man->normal(a, b, -a); man->textureCoord(1, 1);	// 0
 	man->position(5, 10, -5); man->normal(a, b, a); man->textureCoord(1, 0);
@@ -70,6 +71,8 @@ FireEmitter::FireEmitter(Ogre::SceneNode *node, const Vector &d, char *terrain) 
 
 FireEmitter::~FireEmitter() {
 	mNode->detachAllObjects();
+	mSceneMgr->destroyManualObject(man);
+
 }
 
 BoundingBox FireEmitter::worldBound() const {

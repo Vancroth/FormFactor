@@ -1,7 +1,7 @@
 #include "VehicleEntity.h"
 #include "SmokeEmitter.h"
 
-const FormFactor::Vector VehicleEntity::thrust = FormFactor::Vector(0, 0, -20.f);
+const FormFactor::Vector VehicleEntity::thrust = FormFactor::Vector(0, 0, 0.f);
 
 VehicleEntity::VehicleEntity(SceneNode *node) : FormFactor::PhysicsBody(node, true, 20, true, true) {
 	InputController::getSingletonPtr()->addKeyListener(this);
@@ -25,7 +25,7 @@ VehicleEntity::VehicleEntity(SceneNode *node) : FormFactor::PhysicsBody(node, tr
 	float sideDist = worldBound().getMaxPoint()[0] - worldBound().getOrigin()[0];
 	float upDist = worldBound().getMaxPoint()[1] - worldBound().getOrigin()[1];
 	float backDist = worldBound().getMaxPoint()[2] - worldBound().getOrigin()[2];
-	//FormFactor::SmokeEmitter *smokey = new FormFactor::SmokeEmitter(node->createChildSceneNode(Vector3(-sideDist*.5f, -upDist*2, -backDist*.1)), FormFactor::Vector(0, 0, -1));
+	smokey = new FormFactor::SmokeEmitter(node->createChildSceneNode(Vector3(-sideDist*.5f, -upDist*2, -backDist*.1)), FormFactor::Vector(0, 0, -1));
 }
 
 VehicleEntity::~VehicleEntity() {
@@ -36,6 +36,8 @@ VehicleEntity::~VehicleEntity() {
 bool VehicleEntity::frameEvent(const FrameEvent &evt) {
 	curPrimaryCooldown -= (evt.timeSinceLastEvent > 0 ? evt.timeSinceLastEvent : evt.timeSinceLastEvent);
 	curSecondaryCooldown -= (evt.timeSinceLastEvent > 0 ? evt.timeSinceLastEvent : evt.timeSinceLastEvent);
+
+	smokey->frameStarted(evt);
 	return true;
 }
 
@@ -154,9 +156,8 @@ void VehicleEntity::handleCollision(FormFactor::Reference<FormFactor::Primitive>
 		float magOfN = N.length();
 		FormFactor::Vector negVel = -getVelocity(); negVel.y = 0; negVel.normalize();
 		this->addForce(negVel * magOfN * objHit->getCoefficientOfFriction());
-	} else {
-		int i = 0;
-	}
+	} 
+
 	FormFactor::Vector newVel = objHit->handleVehicleCollision(this->vel, this->mass, dir);
 	this->setVelocity(newVel);
 }

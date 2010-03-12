@@ -45,6 +45,7 @@ unsigned int ParticleEmitter::getNumParticlesToEmit(float timeElapsed) {
 }
 
 void ParticleEmitter::emitParticles(float timeElapsed) {
+	updatePosition();
 	float cameraZ = mSceneMgr->getCamera("PlayerCam")->getRealPosition().z;
 	if(cameraZ < pos.z || cameraZ > pos.z + 500.f) return;	// only update while on screen; 
 
@@ -58,8 +59,6 @@ void ParticleEmitter::emitParticles(float timeElapsed) {
 			deadParticles[i] = i;
 		}
 	}
-
-	updatePosition();
 
 	// Update old particles
 	for(unsigned int i = 0; i < maxParticles; i++) {

@@ -3,9 +3,9 @@
 #include "GameEntity.h"
 #include "PhysicsBody.h"
 #include "Reference.h"
+#include "SmokeEmitter.h"
 
 using namespace Ogre;
-
 
 
 class VehicleEntity : public FormFactor::PhysicsBody
@@ -43,6 +43,8 @@ protected:
 	Entity *gliderVehicle;
 	Entity *tankVehicle;
 	Entity *curVehicle;
+
+	FormFactor::SmokeEmitter *smokey;
 
 	float moveSpeed;
 	bool onGround;
