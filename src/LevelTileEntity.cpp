@@ -27,6 +27,14 @@ LevelTileEntity::LevelTileEntity(SceneNode *node, Reference<LevelEntity> l, unsi
 	platform->start();
 	prims.push_back(platform);
 
+	//memset(buf, 0, 60); sprintf(buf, "Volcano-%d", id);
+	//SceneNode *rampNode = node->createChildSceneNode(buf, Vector3(0, 20, -40));
+	//FlareEmitter *volc = new FlareEmitter(rampNode);
+	//FireEmitter *volc = new FireEmitter(groundNode, Vector(0, 1, 0), terrain);
+	//LaunchPad *volc = new LaunchPad(rampNode, Vector(0, 0, -1), 50, terrain);
+	//volc->start();
+	//prims.push_back(volc);
+
 	std::vector<Point> pts;
 	pts.push_back(Point(-50, 0, 0));  pts.push_back(Point(0, 50, -50)); 
 	memset(buf, 0, 60); sprintf(buf, "PowerUp-%d", id);
@@ -54,12 +62,7 @@ void LevelTileEntity::makeRoom(SceneNode *node, std::vector<Reference<Primitive>
 	ground->start();
 	prims.push_back(ground);
 
-	memset(buf, 0, 60); sprintf(buf, "Volcano-%d", id);
-	SceneNode *rampNode = groundNode->createChildSceneNode(buf, Vector3(0, 0, 30));
-	//FireEmitter *volc = new FireEmitter(groundNode, Vector(0, 1, 0), terrain);
-	LaunchPad *volc = new LaunchPad(rampNode, Vector(0, 0, -1), 30, terrain);
-	volc->start();
-	prims.push_back(volc);
+
 
 	// ceiling
 	memset(buf, 0, 60); sprintf(buf, "Ceiling-%d", id);

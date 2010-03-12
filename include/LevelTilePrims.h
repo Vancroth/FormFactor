@@ -8,5 +8,6 @@
 #include "Ground.h"
 #include "MovingPlatform.h"
 #include "FireEmitter.h"
+#include "FlareEmitter.h"
 #include "SmokeEmitter.h"
 #include "LaunchPad.h"

@@ -34,6 +34,8 @@ void FormFactorApplication::createScene()
 	//mSceneMgr->setShadowTechnique(SHADOWTYPE_STENCIL_ADDITIVE);
 	//mSceneMgr->setWorldGeometry("terrain.cfg");
 
+	OverlayManager::getSingleton().getByName("FormFactor/StatsOverlay")->show();
+
 	std::vector<FormFactor::Reference<FormFactor::Primitive> > primitives;
 
 	// Create the player
@@ -60,9 +62,13 @@ void FormFactorApplication::createScene()
 //-------------------------------------------------------------------------------------
 bool FormFactorApplication::frameStarted(const FrameEvent& evt)
 {
+
 	// Do physics update
 	FormFactor::PhysicsBody::simulatePhysics(evt.timeSinceLastFrame*1000);  // put time in ms
 
+	// Update Overlay
+	//char buf[60]; //sprintf(buf, "Orbs Collected: %d", VehicleEntity::getSingletonPointer()->getNumPoints());
+	//OverlayManager::getSingleton().getOverlayElement("FormFactor/StatsOverlay")->setCaption(buf);
 
     return OgreApplication::frameStarted(evt);
 }

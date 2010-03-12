@@ -64,7 +64,7 @@ void OgreApplication::createFrameListener()
 	mAniso = 1;
 	mFiltering = TFO_BILINEAR;
 
-	showDebugOverlay(true);
+	showDebugOverlay(false);
 	Root::getSingletonPtr()->addFrameListener(this);
 }
 //-------------------------------------------------------------------------------------

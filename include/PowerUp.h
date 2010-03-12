@@ -4,6 +4,7 @@
 #include "GameEntity.h"
 #include "Primitive.h"
 #include "Reference.h"
+#include "FlareEmitter.h"
 
 namespace FormFactor {
 
@@ -23,14 +24,18 @@ public:
 	virtual BoundingBox worldBound() const;
 	virtual bool canIntersect() const {return true;} 
 	virtual bool intersects(Reference<Primitive> &other, std::vector<Reference<Primitive> > &objsHit, bool sameTest=false) const;
+	virtual Vector handleVehicleCollision(const Vector &vel, float mass, const Vector &dir);
 
 protected:
 	Ogre::Entity *powerUp;
+	FlareEmitter *flare;
 	unsigned int dest;
 	Vector direction;
 	float distance, speed;
 	std::vector<Point> points;
 	BoundingBox movingBounds;
+
+	bool consumed;			// whether power up has been consumed
 
 private:
 	static unsigned int numPowerUps;
